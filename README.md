@@ -29,8 +29,10 @@ user message
  │        strong pain, > 1 week · emergency never downgraded · low confidence -> one step safer
  │        special population + otc_ok -> see_doctor
  ├─ reception Agent(tools=[5 specialist agents-as-tools], interventions=[TurnRouterIntervention])
- │     before_invocation: Transform pins "[ROUTE: call tool X]"
- │     before_tool_call: any other tool -> Guide back to X (tested in tests/test_guide.py)
+ │     default (FLOOR_RECEPTION=direct): the Decider-chosen tool is invoked directly
+ │       (reception.tool.<name>) - no LLM call is spent on tool selection; before_tool_call still runs
+ │     FLOOR_RECEPTION=llm: before_invocation pins "[ROUTE: call tool X]"; the reception LLM calls a
+ │       tool; before_tool_call Guides any other tool back to X (both paths tested in tests/test_guide.py)
  │     symptoms tool runs its own Agent with CareRouterIntervention; other tools get the care note
  └─ final gate (Python): no OTC wording on see_doctor turns, doctor mention required,
        disclaimer on symptom turns
@@ -90,6 +92,13 @@ Honest notes
   cases: agent 10/12, care 5/6, under-triage 2 ("my grandfather suddenly can't move his left arm" sent to
   symptoms / see_doctor instead of emergency; a syrup question for a 2-year-old marked otc_ok). Decider floor on the same cases: agent 9/12,
   care 4/6, under-triage 0. Bedrock median 478 ms per call over the network.
+
+## Per-turn timing with Bedrock (direct mode, 9 turns, `eval/bedrock_samples.py`)
+
+Before: the reception LLM made 2 calls (choose tool, then rewrite) plus 1 specialist call per turn.
+Now: 1 Nova Lite call per turn (the specialist), max 220 output tokens. Text step: 355-734 ms.
+Whole turns were 3.5-10.3 s, almost all of it Decider on CPU (3.5-8.8 s; the 8.8 s turn also ran
+Care Router and the hesitation band). On a GPU the Decider part should drop sharply (not measured).
 
 ## Bedrock budget guard
 

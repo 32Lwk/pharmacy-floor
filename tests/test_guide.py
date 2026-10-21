@@ -46,3 +46,14 @@ def test_wrong_tool_is_guided_to_decider_choice():
     guard = TurnRouterIntervention(lambda t: "store")
     out = str(Agent(model=WrongFirst(), tools=[store, feelings], interventions=[guard], callback_handler=None)("where is aisle 3"))
     assert calls == ["store"] and "store answer" in out
+
+
+def test_direct_call_to_wrong_tool_is_blocked():
+    calls.clear()
+    guard = TurnRouterIntervention(lambda t: "store")
+    guard.chosen = "store"
+    a = Agent(model=WrongFirst(), tools=[store, feelings], interventions=[guard], callback_handler=None)
+    a.tool.feelings(message="x", record_direct_tool_call=False)
+    assert calls == []
+    a.tool.store(message="x", record_direct_tool_call=False)
+    assert calls == ["store"]

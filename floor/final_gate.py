@@ -16,7 +16,7 @@ def final_gate(reply: str, *, care_route: str | None, symptom_turn: bool) -> tup
     """Returns (reply, verdict). Never lets an OTC push through on a see_doctor/emergency turn."""
     if care_route in ("see_doctor", "emergency") and OTC_PUSH.search(reply):
         return FIXED[care_route], f"replaced: OTC wording on a {care_route} turn"
-    if care_route == "see_doctor" and not re.search(r"doctor|clinic", reply, re.I):
+    if care_route == "see_doctor" and not re.search(r"doctor|clinic|healthcare professional|physician|gynecolog|dermatolog|urolog", reply, re.I):
         return reply.rstrip() + " " + FIXED["see_doctor"], "appended see-a-doctor (reply did not say it)"
     if symptom_turn and "not a diagnosis" not in reply.lower():
         return reply.rstrip() + " " + DISCLAIMER, "appended disclaimer"

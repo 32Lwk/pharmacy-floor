@@ -56,7 +56,7 @@ def record(model_id: str, usage: dict, label: str = "") -> None:
 class GuardedBedrockModel(BedrockModel):
     """BedrockModel that checks the cap before each call and records usage from the response metadata."""
 
-    label = ""
+    label = ""  # set per call site for the usage log
 
     async def stream(self, *args, **kwargs):
         check()

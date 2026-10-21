@@ -132,11 +132,22 @@ class PharmacyFloor:
         reception = Agent(model=make_model(), system_prompt=RECEPTION_PROMPT, tools=self.specialists.tools(),
                           interventions=[guard], callback_handler=None)
         self.specialists.last_output = None
-        reception_text = str(reception(text)).strip()
+        t0 = time.perf_counter()
+        if os.environ.get("FLOOR_RECEPTION", "direct") == "llm":
+            # LLM path: reception model sees the pinned route, calls a tool, before_tool_call Guides it if wrong.
+            reception_text = str(reception(text)).strip()
+            how = "reception LLM (2 calls) + specialist"
+        else:
+            # Direct path (default): Decider already chose the tool, so no LLM call is spent on tool selection.
+            # The call still goes through the tool executor, so before_tool_call on the guard still runs.
+            guard.chosen = agent
+            res = getattr(reception.tool, agent)(message=text, record_direct_tool_call=False)
+            reception_text = " ".join(c.get("text", "") for c in res.get("content", []))
+            how = "direct tool call + specialist"
+        log.add("text", f"{agent} specialist", how, None, "bedrock" if mode() == "bedrock" else "stub",
+                (time.perf_counter() - t0) * 1000)
         # The user sees the specialist's own words; the reception LLM's wrap-up text is not used.
         reply = self.specialists.last_output or re.sub(r"<thinking>.*?</thinking>", "", reception_text, flags=re.S).strip()
-        reply = re.sub(r"\s*\[ROUTE[^\]]*\]", "", reply)
-
         reply, verdict = final_gate(reply, care_route=care.route if care else None, symptom_turn=symptom_turn)
         log.add("final_gate", "reply check", verdict, None, "python-rule")
         return self._finish(log, agent, reply, t_start)

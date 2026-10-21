@@ -12,9 +12,11 @@ DEMO = ["I have a mild headache since this morning.", "My bottom has been itchy 
         "My bottom is itchy and there was blood on the toilet paper.", "I have itching in my genital area.",
         "Sudden chest pain and I can't breathe properly."]
 HESITATE = "Where can I find hay fever tablets?"
+OTHERS = ["What time do you close tonight?", "How many times a day can I take ibuprofen tablets?",
+          "I feel so anxious lately and just need someone to talk to."]
 md = [f"# Pharmacy Floor — real Bedrock replies\n\nModel: `{model_label()}`. Generated {time.strftime('%Y-%m-%d %H:%M %Z')}.\n"]
 floor = PharmacyFloor()
-for title, msgs in (("Demo turns", DEMO), ("Hesitation-band turn", [HESITATE])):
+for title, msgs in (("Demo turns", DEMO), ("Other specialists (store, medicine_question, feelings)", OTHERS), ("Hesitation-band turn", [HESITATE])):
     md.append(f"\n## {title}\n")
     for m in msgs:
         log = floor.handle(m)
@@ -25,7 +27,9 @@ for title, msgs in (("Demo turns", DEMO), ("Hesitation-band turn", [HESITATE])):
             c = "" if e.confidence is None else f" ({e.confidence:.2f})"
             md.append(f"- `{e.step}` {e.question}: **{e.answer}**{c} — {e.decided_by}" + (f", {e.ms:.0f} ms" if e.ms else "") + "\n")
         md.append(f"\n> {log.reply}\n")
-        print(m, "->", log.final_agent, flush=True)
+        tx = next((e.ms for e in log.entries if e.step == "text"), 0)
+        dm = sum(e.ms or 0 for e in log.entries if e.decided_by == "decider-2b")
+        print(f"{m[:45]:<45} -> {log.final_agent:<17} total {log.total_ms:6.0f} ms | decider {dm:5.0f} | text {tx or 0:5.0f}", flush=True)
 
 if "--turns-only" in sys.argv:
     old = OUT.read_text() if OUT.exists() else ""

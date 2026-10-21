@@ -29,7 +29,8 @@ class Specialists:
         self.last_output: str | None = None  # set by the floor when Care Router ran this turn
 
     def _run(self, role: str, message: str, interventions=None) -> str:
-        agent = Agent(model=make_model(), system_prompt=PROMPTS[role], interventions=interventions or [],
+        m = make_model(max_tokens=220); m.label = f"specialist:{role}"
+        agent = Agent(model=m, system_prompt=PROMPTS[role], interventions=interventions or [],
                       callback_handler=None)
         out = re.sub(r"<thinking>.*?</thinking>", "", str(agent(message)), flags=re.S).strip()
         self.last_output = out

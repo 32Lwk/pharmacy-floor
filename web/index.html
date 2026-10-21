@@ -1,32 +1,88 @@
-<!doctype html><html><head><meta charset="utf-8"><title>Pharmacy Floor</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pharmacy Floor</title>
 <style>
-body{font-family:system-ui,sans-serif;margin:0;display:flex;height:100vh;background:#f6f7f9}
-#chat{flex:1;display:flex;flex-direction:column;border-right:1px solid #ddd}
+*{box-sizing:border-box}
+body{margin:0;height:100vh;display:flex;flex-direction:column;font:15px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;color:#1f2937;background:#eef1f5}
+header{display:flex;align-items:center;gap:12px;padding:10px 18px;background:#0f3d3e;color:#fff}
+header h1{font-size:18px;margin:0;font-weight:650}
+header .sub{font-size:13px;opacity:.85}
+header .badge{margin-left:auto;font-size:12px;background:#1f6f6b;padding:4px 10px;border-radius:999px}
+main{flex:1;display:flex;min-height:0}
+#chat{width:46%;display:flex;flex-direction:column;background:#fff;border-right:1px solid #d9dee5}
 #msgs{flex:1;overflow:auto;padding:16px}
-.u,.b{max-width:80%;padding:10px 14px;border-radius:12px;margin:8px 0;line-height:1.4}
-.u{background:#2563eb;color:#fff;margin-left:auto}.b{background:#fff;border:1px solid #e3e3e3}
-.tag{font-size:12px;color:#555;margin-top:4px}
-form{display:flex;padding:12px;gap:8px;background:#fff}input{flex:1;padding:10px;font-size:15px}
-#panel{width:46%;overflow:auto;padding:16px;font-size:13px}
-table{border-collapse:collapse;width:100%;background:#fff}td,th{border-bottom:1px solid #eee;padding:4px 6px;text-align:left}
-.decider-2b{color:#1d4ed8}.bedrock{color:#7c3aed}.python-rule{color:#b45309}.stub-safer-default{color:#b91c1c}
-h3{margin:4px 0 8px}
+.msg{max-width:88%;padding:10px 14px;border-radius:14px;margin:8px 0;white-space:pre-wrap}
+.u{background:#2563eb;color:#fff;margin-left:auto;border-bottom-right-radius:4px}
+.b{background:#f3f5f8;border:1px solid #e1e5ea;border-bottom-left-radius:4px}
+.who{font-size:12px;font-weight:600;color:#0f766e;margin-bottom:3px;text-transform:uppercase;letter-spacing:.03em}
+.who.em{color:#b91c1c}
+#chips{display:flex;flex-wrap:wrap;gap:6px;padding:8px 12px 0}
+.chip{font-size:12px;border:1px solid #cbd5e1;background:#f8fafc;border-radius:999px;padding:4px 10px;cursor:pointer}
+form{display:flex;gap:8px;padding:10px 12px 12px}
+input{flex:1;padding:10px 12px;font-size:15px;border:1px solid #cbd5e1;border-radius:10px}
+button{padding:10px 16px;border:0;border-radius:10px;background:#0f766e;color:#fff;font-weight:600;cursor:pointer}
+button:disabled{opacity:.5}
+#panel{flex:1;overflow:auto;padding:14px 16px}
+#panel h2{font-size:15px;margin:0 0 8px}
+.cards{display:flex;gap:8px;margin-bottom:10px;flex-wrap:wrap}
+.card{background:#fff;border:1px solid #d9dee5;border-radius:10px;padding:8px 12px;min-width:120px}
+.card .k{font-size:11px;color:#6b7280;text-transform:uppercase;letter-spacing:.04em}
+.card .v{font-size:16px;font-weight:650}
+table{width:100%;border-collapse:collapse;background:#fff;border:1px solid #d9dee5;border-radius:10px;overflow:hidden;font-size:13px}
+th{background:#f3f5f8;text-align:left;font-weight:600;padding:6px 8px;color:#4b5563}
+td{padding:5px 8px;white-space:normal;border-top:1px solid #eef0f3;vertical-align:top}
+tr.sec td{background:#fafbfc;font-weight:600;color:#374151;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+tr.dim td{color:#9ca3af}
+td:nth-child(3){white-space:nowrap}
+.bar{display:inline-block;height:8px;border-radius:4px;background:#93c5fd;vertical-align:middle;margin-right:6px}
+.by{font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;white-space:nowrap}
+.decider-2b{background:#dbeafe;color:#1e40af}.bedrock{background:#ede9fe;color:#5b21b6}
+.python-rule{background:#fef3c7;color:#92400e}.stub-safer-default{background:#fee2e2;color:#991b1b}
+.legend{font-size:12px;color:#6b7280;margin:8px 0 0}
+.empty{color:#6b7280;padding:20px;text-align:center;background:#fff;border:1px dashed #cbd5e1;border-radius:10px}
+.toggle{font-size:12px;color:#2563eb;cursor:pointer;margin-left:8px}
 </style></head><body>
-<div id="chat"><div id="msgs"></div>
-<form id="f"><input id="m" placeholder="Ask the pharmacy floor..." autocomplete="off"><button>Send</button></form></div>
-<div id="panel"><h3>Decisions this turn</h3><div id="llm"></div><div id="dec">Send a message.</div></div>
+<header><h1>Pharmacy Floor</h1><span class="sub">Strands Decider 2B decides · Amazon Bedrock writes</span><span class="badge" id="llm">…</span></header>
+<main>
+<section id="chat">
+ <div id="msgs"><div class="msg b"><div class="who">reception</div>Hi! Ask me about a symptom, a medicine, or the shop. This demo gives general guidance, not a diagnosis.</div></div>
+ <div id="chips"></div>
+ <form id="f"><input id="m" placeholder="Type a message…" autocomplete="off"><button id="send">Send</button></form>
+</section>
+<section id="panel">
+ <h2>Decisions this turn <span class="toggle" id="tg">show low-probability flags</span></h2>
+ <div id="dec"><div class="empty">Send a message to see every decision: the question, the answer, the confidence, and who decided.</div></div>
+ <p class="legend"><span class="by decider-2b">decider-2b</span> local Decider 2B &nbsp; <span class="by bedrock">bedrock</span> Nova Lite (text, hesitation band) &nbsp; <span class="by python-rule">python-rule</span> hard rule &nbsp; <span class="by stub-safer-default">safer default</span></p>
+</section>
+</main>
 <script>
 const $=s=>document.querySelector(s);
-fetch('/api/info').then(r=>r.json()).then(j=>$('#llm').textContent='Text model: '+j.llm);
-function el(t,c,txt){const e=document.createElement(t);e.className=c;e.textContent=txt;return e}
-$('#f').onsubmit=async e=>{e.preventDefault();const m=$('#m').value.trim();if(!m)return;$('#m').value='';
- $('#msgs').append(el('div','u',m));$('#dec').textContent='Deciding...';
- const r=await (await fetch('/api/chat',{method:'POST',body:JSON.stringify({message:m})})).json();
- const b=el('div','b',r.reply);b.append(el('div','tag','→ '+r.final_agent+' · '+Math.round(r.total_ms)+' ms'));$('#msgs').append(b);
- $('#msgs').scrollTop=1e9;
- const t=document.createElement('table');t.innerHTML='<tr><th>step</th><th>question</th><th>answer</th><th>conf</th><th>decided by</th><th>ms</th></tr>';
- for(const x of r.entries){const tr=document.createElement('tr');
-  for(const v of [x.step,x.question,x.answer,x.confidence==null?'':x.confidence.toFixed(2),x.decided_by,x.ms==null?'':Math.round(x.ms)]){const td=document.createElement('td');td.textContent=v;tr.append(td)}
-  tr.children[4].className=x.decided_by;t.append(tr)}
- $('#dec').replaceChildren(t)};
+const SAMPLES=["I have a mild headache since this morning.","My bottom has been itchy around the anus for two days.","My bottom is itchy and there was blood on the toilet paper.","I have itching in my genital area.","Sudden chest pain and I can't breathe properly.","Where can I find hay fever tablets?"];
+let showAll=false,last=null;
+function el(t,c,txt){const e=document.createElement(t);if(c)e.className=c;if(txt!=null)e.textContent=txt;return e}
+for(const s of SAMPLES){const c=el('span','chip',s);c.onclick=()=>{$('#m').value=s;$('#m').focus()};$('#chips').append(c)}
+fetch('/api/info').then(r=>r.json()).then(j=>$('#llm').textContent='text model: '+j.llm);
+$('#tg').onclick=()=>{showAll=!showAll;$('#tg').textContent=showAll?'hide low-probability flags':'show low-probability flags';if(last)render(last)};
+const STEP={pre_gate:'Pre-gate (crisis words)',turn_router:'Turn Router — one Decider call',hesitation:'Hesitation band',care_router:'Care Router — safety layer',policy:'Hard rules',final_gate:'Final gate'};
+function render(r){
+ const dms=r.entries.filter(e=>e.decided_by==='decider-2b'&&e.ms).reduce((a,e)=>a+e.ms,0);
+ const fg=(r.entries.find(e=>e.step==='final_gate')||{}).answer||'—';
+ const cards=el('div','cards');
+ for(const [k,v] of [['specialist',r.final_agent],['Decider time',Math.round(dms)+' ms'],['turn total',Math.round(r.total_ms)+' ms'],['final gate',fg]]){const c=el('div','card');c.append(el('div','k',k),el('div','v',v));cards.append(c)}
+ const t=el('table');const h=el('tr');for(const x of ['question','answer','confidence','decided by','ms'])h.append(el('th',null,x));t.append(h);
+ let cur=null;
+ for(const e of r.entries){
+  const low=e.decided_by==='decider-2b'&&e.question!=='agent'&&e.question!=='route'&&e.confidence!=null&&e.confidence<0.4;
+  if(low&&!showAll)continue;
+  if(e.step!==cur){cur=e.step;const s=el('tr','sec');const td=el('td',null,STEP[e.step]||e.step);td.colSpan=5;s.append(td);t.append(s)}
+  const tr=el('tr',low?'dim':null);tr.append(el('td',null,e.question),el('td',null,e.answer));
+  const c=el('td');if(e.confidence!=null){const b=el('span','bar');b.style.width=Math.round(e.confidence*40)+'px';c.append(b,document.createTextNode(e.confidence.toFixed(2)))}tr.append(c);
+  const by=el('td');by.append(el('span','by '+e.decided_by,e.decided_by==='stub-safer-default'?'safer default':e.decided_by));tr.append(by);
+  tr.append(el('td',null,e.ms?Math.round(e.ms):''));t.append(tr)}
+ $('#dec').replaceChildren(cards,t)}
+$('#f').onsubmit=async ev=>{ev.preventDefault();const m=$('#m').value.trim();if(!m)return;$('#m').value='';$('#send').disabled=true;
+ $('#msgs').append(el('div','msg u',m));$('#dec').replaceChildren(el('div','empty','Decider 2B is deciding…'));$('#msgs').scrollTop=1e9;
+ try{const r=await (await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:m})})).json();
+  last=r;const b=el('div','msg b');b.append(el('div','who'+(r.final_agent==='emergency'?' em':''),r.final_agent.replace('_',' ')),document.createTextNode(r.reply));$('#msgs').append(b);render(r)}
+ catch(e){$('#dec').replaceChildren(el('div','empty','Error: '+e))}
+ $('#send').disabled=false;$('#msgs').scrollTop=1e9;$('#m').focus()};
 </script></body></html>
