@@ -18,6 +18,6 @@ def final_gate(reply: str, *, care_route: str | None, symptom_turn: bool) -> tup
         return FIXED[care_route], f"replaced: OTC wording on a {care_route} turn"
     if care_route == "see_doctor" and not re.search(r"doctor|clinic", reply, re.I):
         return reply.rstrip() + " " + FIXED["see_doctor"], "appended see-a-doctor (reply did not say it)"
-    if symptom_turn and DISCLAIMER.lower() not in reply.lower():
+    if symptom_turn and "not a diagnosis" not in reply.lower():
         return reply.rstrip() + " " + DISCLAIMER, "appended disclaimer"
     return reply, "pass"

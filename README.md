@@ -55,17 +55,17 @@ LLM mode: `FLOOR_LLM=auto` (default) uses Bedrock `us.amazon.nova-lite-v1:0` in 
 
 ## Measured results (CPU only, 8 vCPU, no GPU; stub text model)
 
-Decider latency per call, same CPU (`eval/bench_sets.py`, n=8 each):
+Decider latency per call, same CPU (`eval/bench_sets.py`, current code, n=8 each, 4 texts x 2):
 
 | Question set | Median |
 |---|---|
-| 13 questions (2 choice + 11 yes/no) | 8557 ms |
-| 6 questions (1 choice + 5 yes/no) | 2614 ms |
-| 5 questions | 2205 ms |
-| agent choice only | 541 ms |
+| full turn set: 14 questions (2 choice + 12 yes/no) | 8883 ms |
+| **demo turn set: 6 questions (1 choice + 5 yes/no)** — used every turn | **2518 ms** |
+| agent choice only (1 question) | 544 ms |
+| Care Router: 6 questions (1 choice + 5 yes/no) — only on turns that mention a symptom | 1728 ms |
 
-The demo uses the 6-question turn set. Whole turn (Decider calls + stub): median 5.7 s on the 40 dev
-cases, ~3.5 s for turns without a symptom.
+Whole turn with the stub text model (from `eval/results*.json`): turns with a symptom median 6291 ms
+(n=21, dev) / 5801 ms (n=6, held-out); turns without a symptom 3835 ms (n=17) / 3537 ms (n=6).
 
 Routing and safety. "Under-triage" = the final outcome is less careful than expected.
 
@@ -86,6 +86,16 @@ Honest notes
 - Hand-tuning: the `self_harm` wording and the crisis-word pre-gate were added after Decider scored an
   indirect overdose message at P = 0.15 (case 40). The store option text and the hesitation band
   (0.4-0.6) were also adjusted once after the first dev run.
-- Bedrock comparison: not run yet (no AWS keys on the build machine).
+- Bedrock-only routing (Nova Lite, one JSON classification call per message, no Decider) on the 12 held-out
+  cases: agent 10/12, care 5/6, under-triage 2 ("my grandfather suddenly can't move his left arm" sent to
+  symptoms / see_doctor instead of emergency; a syrup question for a 2-year-old marked otc_ok). Decider floor on the same cases: agent 9/12,
+  care 4/6, under-triage 0. Bedrock median 478 ms per call over the network.
+
+## Bedrock budget guard
+
+`floor/budget.py` wraps `BedrockModel`: before every call it checks the running total in
+`logs/bedrock_usage.json` and refuses once **$1.00 or 300 calls** is reached; after every call it adds the
+`usage` token counts from the Converse response at Nova Lite prices ($0.06 / 1M input, $0.24 / 1M output,
+us-east-1 on-demand). Only Nova Lite model IDs are allowed.
 
 License: Apache-2.0.

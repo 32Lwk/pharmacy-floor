@@ -1,6 +1,8 @@
 """Five specialist Strands agents, exposed to the reception agent as tools (agents-as-tools)."""
 from __future__ import annotations
 
+import re
+
 from strands import Agent, tool
 
 from recipes.care_router import CareRouterIntervention
@@ -23,12 +25,15 @@ PROMPTS = {
 class Specialists:
     def __init__(self, care_guard: CareRouterIntervention):
         self.care_guard = care_guard
-        self.care_note: str | None = None  # set by the floor when Care Router ran this turn
+        self.care_note: str | None = None
+        self.last_output: str | None = None  # set by the floor when Care Router ran this turn
 
     def _run(self, role: str, message: str, interventions=None) -> str:
         agent = Agent(model=make_model(), system_prompt=PROMPTS[role], interventions=interventions or [],
                       callback_handler=None)
-        return str(agent(message)).strip()
+        out = re.sub(r"<thinking>.*?</thinking>", "", str(agent(message)), flags=re.S).strip()
+        self.last_output = out
+        return out
 
     def tools(self):
         sp = self

@@ -56,8 +56,12 @@ class PharmacyFloor:
             else:
                 q = SAFETY_ALL[key][0] + " Reply with yes or no only."
             t0 = time.perf_counter()
-            out = str(Agent(model=make_model(max_tokens=10), system_prompt="You are a strict classifier.",
-                            callback_handler=None)(f"Message: {text}\n{q}")).strip().lower()
+            try:
+                jm = make_model(max_tokens=20); jm.label = f"hesitation:{key}"
+                out = str(Agent(model=jm, system_prompt="You are a strict classifier.",
+                                callback_handler=None)(f"Message: {text}\n{q}")).strip().lower()
+            except Exception as e:  # budget, max tokens, access: fall through to the safer default
+                out = f"error:{type(e).__name__}"
             ms = (time.perf_counter() - t0) * 1000
             if key == "agent":
                 pick = next((a for a in AGENTS if a in out), None)
@@ -127,7 +131,10 @@ class PharmacyFloor:
         guard = TurnRouterIntervention(lambda _t: agent)
         reception = Agent(model=make_model(), system_prompt=RECEPTION_PROMPT, tools=self.specialists.tools(),
                           interventions=[guard], callback_handler=None)
-        reply = str(reception(text)).strip()
+        self.specialists.last_output = None
+        reception_text = str(reception(text)).strip()
+        # The user sees the specialist's own words; the reception LLM's wrap-up text is not used.
+        reply = self.specialists.last_output or re.sub(r"<thinking>.*?</thinking>", "", reception_text, flags=re.S).strip()
         reply = re.sub(r"\s*\[ROUTE[^\]]*\]", "", reply)
 
         reply, verdict = final_gate(reply, care_route=care.route if care else None, symptom_turn=symptom_turn)

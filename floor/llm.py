@@ -24,8 +24,10 @@ def mode() -> str:
 
 def make_model(max_tokens: int = 400):
     if mode() == "bedrock":
-        from strands.models.bedrock import BedrockModel
-        return BedrockModel(model_id=NOVA_LITE, region_name=REGION, max_tokens=max_tokens, temperature=0.3)
+        from .budget import GuardedBedrockModel
+        if "nova-lite" not in NOVA_LITE:
+            raise ValueError("Only Amazon Nova Lite is allowed (budget)")
+        return GuardedBedrockModel(model_id=NOVA_LITE, region_name=REGION, max_tokens=max_tokens, temperature=0.3)
     return StubModel()
 
 
