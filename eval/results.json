@@ -1,0 +1,751 @@
+{
+ "summary": {
+  "n": 30,
+  "device": "cpu",
+  "model_load_s": 8.1,
+  "latency_ms": {
+   "median": 2592.9,
+   "p90": 2736.2,
+   "min": 2401.2,
+   "max": 3109.8
+  },
+  "decider_raw": {
+   "correct": 27,
+   "under_triage": 0
+  },
+  "decider_policy": {
+   "correct": 28,
+   "under_triage": 0
+  },
+  "rules_only": {
+   "correct": 23,
+   "under_triage": 6
+  }
+ },
+ "rows": [
+  {
+   "id": 1,
+   "text": "I have a mild headache since this morning, nothing else.",
+   "expected": "otc_ok",
+   "decider_raw": "otc_ok",
+   "confidence": 0.8286,
+   "probabilities": {
+    "otc_ok": 0.8857,
+    "see_doctor": 0.0989,
+    "emergency": 0.0154
+   },
+   "flags": {
+    "genital_area": 0.2881,
+    "anal_area": 0.089,
+    "bleeding": 0.1246,
+    "strong_pain": 0.0896,
+    "long_duration": 0.1487
+   },
+   "decider_policy": "otc_ok",
+   "reasons": [],
+   "rules_only": "otc_ok",
+   "ms": 2436.2
+  },
+  {
+   "id": 2,
+   "text": "Runny nose and sneezing since yesterday, probably a cold.",
+   "expected": "otc_ok",
+   "decider_raw": "otc_ok",
+   "confidence": 0.8828,
+   "probabilities": {
+    "otc_ok": 0.9219,
+    "see_doctor": 0.0632,
+    "emergency": 0.0149
+   },
+   "flags": {
+    "genital_area": 0.2992,
+    "anal_area": 0.0878,
+    "bleeding": 0.1241,
+    "strong_pain": 0.0947,
+    "long_duration": 0.1621
+   },
+   "decider_policy": "otc_ok",
+   "reasons": [],
+   "rules_only": "otc_ok",
+   "ms": 3109.8
+  },
+  {
+   "id": 3,
+   "text": "My bottom has been itchy around the anus for two days.",
+   "expected": "otc_ok",
+   "decider_raw": "see_doctor",
+   "confidence": 0.8321,
+   "probabilities": {
+    "otc_ok": 0.1019,
+    "see_doctor": 0.888,
+    "emergency": 0.0101
+   },
+   "flags": {
+    "genital_area": 0.0924,
+    "anal_area": 0.7836,
+    "bleeding": 0.1317,
+    "strong_pain": 0.1339,
+    "long_duration": 0.2029
+   },
+   "decider_policy": "otc_ok",
+   "reasons": [
+    "anal area, no danger sign: OTC allowed (with see-a-doctor signs)"
+   ],
+   "rules_only": "otc_ok",
+   "ms": 2526.5
+  },
+  {
+   "id": 4,
+   "text": "I think I have piles, a little sore when sitting, started this week.",
+   "expected": "otc_ok",
+   "decider_raw": "see_doctor",
+   "confidence": 0.5631,
+   "probabilities": {
+    "otc_ok": 0.2785,
+    "see_doctor": 0.7087,
+    "emergency": 0.0128
+   },
+   "flags": {
+    "genital_area": 0.1155,
+    "anal_area": 0.7475,
+    "bleeding": 0.1291,
+    "strong_pain": 0.108,
+    "long_duration": 0.2052
+   },
+   "decider_policy": "otc_ok",
+   "reasons": [
+    "anal area, no danger sign: OTC allowed (with see-a-doctor signs)"
+   ],
+   "rules_only": "see_doctor",
+   "ms": 2715.4
+  },
+  {
+   "id": 5,
+   "text": "Heartburn after a big dinner last night.",
+   "expected": "otc_ok",
+   "decider_raw": "otc_ok",
+   "confidence": 0.8705,
+   "probabilities": {
+    "otc_ok": 0.9136,
+    "see_doctor": 0.0707,
+    "emergency": 0.0156
+   },
+   "flags": {
+    "genital_area": 0.2082,
+    "anal_area": 0.0994,
+    "bleeding": 0.1366,
+    "strong_pain": 0.1409,
+    "long_duration": 0.1396
+   },
+   "decider_policy": "otc_ok",
+   "reasons": [],
+   "rules_only": "otc_ok",
+   "ms": 2760.2
+  },
+  {
+   "id": 6,
+   "text": "Slight sore throat this morning, no fever.",
+   "expected": "otc_ok",
+   "decider_raw": "otc_ok",
+   "confidence": 0.8294,
+   "probabilities": {
+    "otc_ok": 0.8863,
+    "see_doctor": 0.0986,
+    "emergency": 0.0151
+   },
+   "flags": {
+    "genital_area": 0.2978,
+    "anal_area": 0.098,
+    "bleeding": 0.1292,
+    "strong_pain": 0.0899,
+    "long_duration": 0.1444
+   },
+   "decider_policy": "otc_ok",
+   "reasons": [],
+   "rules_only": "otc_ok",
+   "ms": 2493.2
+  },
+  {
+   "id": 7,
+   "text": "I have a small cut on my finger from cooking.",
+   "expected": "otc_ok",
+   "decider_raw": "otc_ok",
+   "confidence": 0.4372,
+   "probabilities": {
+    "otc_ok": 0.6248,
+    "see_doctor": 0.333,
+    "emergency": 0.0423
+   },
+   "flags": {
+    "genital_area": 0.2884,
+    "anal_area": 0.0919,
+    "bleeding": 0.1441,
+    "strong_pain": 0.1041,
+    "long_duration": 0.1487
+   },
+   "decider_policy": "see_doctor",
+   "reasons": [
+    "low confidence 0.44 < 0.5: otc_ok -> see_doctor"
+   ],
+   "rules_only": "otc_ok",
+   "ms": 2721.2
+  },
+  {
+   "id": 8,
+   "text": "Mild muscle ache in my shoulders after the gym yesterday.",
+   "expected": "otc_ok",
+   "decider_raw": "otc_ok",
+   "confidence": 0.7653,
+   "probabilities": {
+    "otc_ok": 0.8435,
+    "see_doctor": 0.1415,
+    "emergency": 0.015
+   },
+   "flags": {
+    "genital_area": 0.259,
+    "anal_area": 0.0951,
+    "bleeding": 0.1224,
+    "strong_pain": 0.0898,
+    "long_duration": 0.1426
+   },
+   "decider_policy": "otc_ok",
+   "reasons": [],
+   "rules_only": "otc_ok",
+   "ms": 2614.9
+  },
+  {
+   "id": 9,
+   "text": "My eyes are a bit dry and tired from screens.",
+   "expected": "otc_ok",
+   "decider_raw": "otc_ok",
+   "confidence": 0.7521,
+   "probabilities": {
+    "otc_ok": 0.8348,
+    "see_doctor": 0.1537,
+    "emergency": 0.0115
+   },
+   "flags": {
+    "genital_area": 0.3088,
+    "anal_area": 0.0948,
+    "bleeding": 0.1273,
+    "strong_pain": 0.0949,
+    "long_duration": 0.1571
+   },
+   "decider_policy": "otc_ok",
+   "reasons": [],
+   "rules_only": "otc_ok",
+   "ms": 2736.2
+  },
+  {
+   "id": 10,
+   "text": "Hay fever again, itchy eyes and sneezing like every spring.",
+   "expected": "otc_ok",
+   "decider_raw": "otc_ok",
+   "confidence": 0.8219,
+   "probabilities": {
+    "otc_ok": 0.8813,
+    "see_doctor": 0.1084,
+    "emergency": 0.0104
+   },
+   "flags": {
+    "genital_area": 0.3221,
+    "anal_area": 0.1201,
+    "bleeding": 0.1285,
+    "strong_pain": 0.1123,
+    "long_duration": 0.2881
+   },
+   "decider_policy": "otc_ok",
+   "reasons": [],
+   "rules_only": "otc_ok",
+   "ms": 2728.7
+  },
+  {
+   "id": 11,
+   "text": "A little constipated for two days.",
+   "expected": "otc_ok",
+   "decider_raw": "otc_ok",
+   "confidence": 0.8258,
+   "probabilities": {
+    "otc_ok": 0.8839,
+    "see_doctor": 0.1019,
+    "emergency": 0.0142
+   },
+   "flags": {
+    "genital_area": 0.1325,
+    "anal_area": 0.1162,
+    "bleeding": 0.1284,
+    "strong_pain": 0.1094,
+    "long_duration": 0.159
+   },
+   "decider_policy": "otc_ok",
+   "reasons": [],
+   "rules_only": "otc_ok",
+   "ms": 2750.0
+  },
+  {
+   "id": 12,
+   "text": "I got a few mosquito bites and they itch.",
+   "expected": "otc_ok",
+   "decider_raw": "otc_ok",
+   "confidence": 0.842,
+   "probabilities": {
+    "otc_ok": 0.8947,
+    "see_doctor": 0.0931,
+    "emergency": 0.0122
+   },
+   "flags": {
+    "genital_area": 0.242,
+    "anal_area": 0.1514,
+    "bleeding": 0.1232,
+    "strong_pain": 0.098,
+    "long_duration": 0.1456
+   },
+   "decider_policy": "otc_ok",
+   "reasons": [],
+   "rules_only": "otc_ok",
+   "ms": 2702.2
+  },
+  {
+   "id": 13,
+   "text": "My bottom is itchy and there was blood on the toilet paper.",
+   "expected": "see_doctor",
+   "decider_raw": "see_doctor",
+   "confidence": 0.7647,
+   "probabilities": {
+    "otc_ok": 0.0613,
+    "see_doctor": 0.8431,
+    "emergency": 0.0956
+   },
+   "flags": {
+    "genital_area": 0.107,
+    "anal_area": 0.6106,
+    "bleeding": 0.7907,
+    "strong_pain": 0.1652,
+    "long_duration": 0.1412
+   },
+   "decider_policy": "see_doctor",
+   "reasons": [
+    "anal area + danger sign ['bleeding']: see a doctor"
+   ],
+   "rules_only": "see_doctor",
+   "ms": 2680.4
+  },
+  {
+   "id": 14,
+   "text": "Hemorrhoid pain is really intense, I can hardly sit.",
+   "expected": "see_doctor",
+   "decider_raw": "see_doctor",
+   "confidence": 0.7308,
+   "probabilities": {
+    "otc_ok": 0.1426,
+    "see_doctor": 0.8206,
+    "emergency": 0.0369
+   },
+   "flags": {
+    "genital_area": 0.1066,
+    "anal_area": 0.8828,
+    "bleeding": 0.15,
+    "strong_pain": 0.9018,
+    "long_duration": 0.1711
+   },
+   "decider_policy": "see_doctor",
+   "reasons": [
+    "anal area + danger sign ['strong_pain']: see a doctor"
+   ],
+   "rules_only": "see_doctor",
+   "ms": 2505.0
+  },
+  {
+   "id": 15,
+   "text": "The itching around my anus has gone on for over a month.",
+   "expected": "see_doctor",
+   "decider_raw": "see_doctor",
+   "confidence": 0.9514,
+   "probabilities": {
+    "otc_ok": 0.0264,
+    "see_doctor": 0.9676,
+    "emergency": 0.006
+   },
+   "flags": {
+    "genital_area": 0.109,
+    "anal_area": 0.7463,
+    "bleeding": 0.1294,
+    "strong_pain": 0.1356,
+    "long_duration": 0.9149
+   },
+   "decider_policy": "see_doctor",
+   "reasons": [
+    "anal area + danger sign ['long_duration']: see a doctor"
+   ],
+   "rules_only": "see_doctor",
+   "ms": 2617.8
+  },
+  {
+   "id": 16,
+   "text": "I have itching in my genital area.",
+   "expected": "see_doctor",
+   "decider_raw": "see_doctor",
+   "confidence": 0.9026,
+   "probabilities": {
+    "otc_ok": 0.055,
+    "see_doctor": 0.9351,
+    "emergency": 0.0099
+   },
+   "flags": {
+    "genital_area": 0.817,
+    "anal_area": 0.5303,
+    "bleeding": 0.1283,
+    "strong_pain": 0.1321,
+    "long_duration": 0.2054
+   },
+   "decider_policy": "see_doctor",
+   "reasons": [
+    "genital area: always see a doctor (no OTC)"
+   ],
+   "rules_only": "see_doctor",
+   "ms": 2401.2
+  },
+  {
+   "id": 17,
+   "text": "There is a rash down there on my private parts.",
+   "expected": "see_doctor",
+   "decider_raw": "see_doctor",
+   "confidence": 0.9017,
+   "probabilities": {
+    "otc_ok": 0.0449,
+    "see_doctor": 0.9345,
+    "emergency": 0.0206
+   },
+   "flags": {
+    "genital_area": 0.5241,
+    "anal_area": 0.5968,
+    "bleeding": 0.134,
+    "strong_pain": 0.1969,
+    "long_duration": 0.1685
+   },
+   "decider_policy": "see_doctor",
+   "reasons": [
+    "genital area: always see a doctor (no OTC)"
+   ],
+   "rules_only": "otc_ok",
+   "ms": 2530.3
+  },
+  {
+   "id": 18,
+   "text": "Burning feeling on my penis when I pee.",
+   "expected": "see_doctor",
+   "decider_raw": "see_doctor",
+   "confidence": 0.8293,
+   "probabilities": {
+    "otc_ok": 0.0926,
+    "see_doctor": 0.8862,
+    "emergency": 0.0212
+   },
+   "flags": {
+    "genital_area": 0.9109,
+    "anal_area": 0.1525,
+    "bleeding": 0.1413,
+    "strong_pain": 0.2372,
+    "long_duration": 0.1545
+   },
+   "decider_policy": "see_doctor",
+   "reasons": [
+    "genital area: always see a doctor (no OTC)"
+   ],
+   "rules_only": "see_doctor",
+   "ms": 2452.4
+  },
+  {
+   "id": 19,
+   "text": "Unusual discharge and itching in the vagina.",
+   "expected": "see_doctor",
+   "decider_raw": "see_doctor",
+   "confidence": 0.9498,
+   "probabilities": {
+    "otc_ok": 0.0231,
+    "see_doctor": 0.9666,
+    "emergency": 0.0103
+   },
+   "flags": {
+    "genital_area": 0.8916,
+    "anal_area": 0.1331,
+    "bleeding": 0.1271,
+    "strong_pain": 0.1179,
+    "long_duration": 0.2135
+   },
+   "decider_policy": "see_doctor",
+   "reasons": [
+    "genital area: always see a doctor (no OTC)"
+   ],
+   "rules_only": "see_doctor",
+   "ms": 2607.1
+  },
+  {
+   "id": 20,
+   "text": "A cough that has not gone away for three weeks.",
+   "expected": "see_doctor",
+   "decider_raw": "see_doctor",
+   "confidence": 0.6951,
+   "probabilities": {
+    "otc_ok": 0.1716,
+    "see_doctor": 0.7968,
+    "emergency": 0.0317
+   },
+   "flags": {
+    "genital_area": 0.2281,
+    "anal_area": 0.1019,
+    "bleeding": 0.1271,
+    "strong_pain": 0.1203,
+    "long_duration": 0.9099
+   },
+   "decider_policy": "see_doctor",
+   "reasons": [],
+   "rules_only": "see_doctor",
+   "ms": 2578.6
+  },
+  {
+   "id": 21,
+   "text": "I found a lump in my neck that keeps growing.",
+   "expected": "see_doctor",
+   "decider_raw": "see_doctor",
+   "confidence": 0.8592,
+   "probabilities": {
+    "otc_ok": 0.0163,
+    "see_doctor": 0.9062,
+    "emergency": 0.0775
+   },
+   "flags": {
+    "genital_area": 0.3164,
+    "anal_area": 0.0909,
+    "bleeding": 0.1204,
+    "strong_pain": 0.1259,
+    "long_duration": 0.352
+   },
+   "decider_policy": "see_doctor",
+   "reasons": [],
+   "rules_only": "see_doctor",
+   "ms": 2530.5
+  },
+  {
+   "id": 22,
+   "text": "Fever of 38.5 that has lasted four days.",
+   "expected": "see_doctor",
+   "decider_raw": "emergency",
+   "confidence": 0.4034,
+   "probabilities": {
+    "otc_ok": 0.055,
+    "see_doctor": 0.3427,
+    "emergency": 0.6023
+   },
+   "flags": {
+    "genital_area": 0.2482,
+    "anal_area": 0.0963,
+    "bleeding": 0.1197,
+    "strong_pain": 0.2407,
+    "long_duration": 0.2749
+   },
+   "decider_policy": "emergency",
+   "reasons": [
+    "Decider: emergency (never downgraded)"
+   ],
+   "rules_only": "otc_ok",
+   "ms": 2554.0
+  },
+  {
+   "id": 23,
+   "text": "Stomach pain that keeps getting worse over several days.",
+   "expected": "see_doctor",
+   "decider_raw": "see_doctor",
+   "confidence": 0.8048,
+   "probabilities": {
+    "otc_ok": 0.0479,
+    "see_doctor": 0.8698,
+    "emergency": 0.0823
+   },
+   "flags": {
+    "genital_area": 0.1834,
+    "anal_area": 0.1179,
+    "bleeding": 0.1271,
+    "strong_pain": 0.322,
+    "long_duration": 0.3098
+   },
+   "decider_policy": "see_doctor",
+   "reasons": [],
+   "rules_only": "see_doctor",
+   "ms": 2663.3
+  },
+  {
+   "id": 24,
+   "text": "Headaches almost every day for the last two months.",
+   "expected": "see_doctor",
+   "decider_raw": "see_doctor",
+   "confidence": 0.6944,
+   "probabilities": {
+    "otc_ok": 0.1842,
+    "see_doctor": 0.7963,
+    "emergency": 0.0196
+   },
+   "flags": {
+    "genital_area": 0.2758,
+    "anal_area": 0.0993,
+    "bleeding": 0.1257,
+    "strong_pain": 0.181,
+    "long_duration": 0.9073
+   },
+   "decider_policy": "see_doctor",
+   "reasons": [],
+   "rules_only": "see_doctor",
+   "ms": 2456.7
+  },
+  {
+   "id": 25,
+   "text": "Sudden chest pain and I can't breathe properly.",
+   "expected": "emergency",
+   "decider_raw": "emergency",
+   "confidence": 0.6602,
+   "probabilities": {
+    "otc_ok": 0.0089,
+    "see_doctor": 0.2176,
+    "emergency": 0.7734
+   },
+   "flags": {
+    "genital_area": 0.3121,
+    "anal_area": 0.1063,
+    "bleeding": 0.1271,
+    "strong_pain": 0.6551,
+    "long_duration": 0.1425
+   },
+   "decider_policy": "emergency",
+   "reasons": [
+    "Decider: emergency (never downgraded)"
+   ],
+   "rules_only": "emergency",
+   "ms": 2649.9
+  },
+  {
+   "id": 26,
+   "text": "My father's face is drooping on one side and his speech is slurred.",
+   "expected": "emergency",
+   "decider_raw": "emergency",
+   "confidence": 0.5982,
+   "probabilities": {
+    "otc_ok": 0.0119,
+    "see_doctor": 0.256,
+    "emergency": 0.7321
+   },
+   "flags": {
+    "genital_area": 0.2972,
+    "anal_area": 0.0848,
+    "bleeding": 0.1231,
+    "strong_pain": 0.174,
+    "long_duration": 0.1929
+   },
+   "decider_policy": "emergency",
+   "reasons": [
+    "Decider: emergency (never downgraded)"
+   ],
+   "rules_only": "emergency",
+   "ms": 2620.5
+  },
+  {
+   "id": 27,
+   "text": "After eating peanuts my throat feels tight and my lips are swelling.",
+   "expected": "emergency",
+   "decider_raw": "emergency",
+   "confidence": 0.2918,
+   "probabilities": {
+    "otc_ok": 0.0631,
+    "see_doctor": 0.409,
+    "emergency": 0.5279
+   },
+   "flags": {
+    "genital_area": 0.329,
+    "anal_area": 0.0958,
+    "bleeding": 0.1268,
+    "strong_pain": 0.1708,
+    "long_duration": 0.133
+   },
+   "decider_policy": "emergency",
+   "reasons": [
+    "Decider: emergency (never downgraded)"
+   ],
+   "rules_only": "otc_ok",
+   "ms": 2518.7
+  },
+  {
+   "id": 28,
+   "text": "I vomited a lot of blood just now.",
+   "expected": "emergency",
+   "decider_raw": "emergency",
+   "confidence": 0.71,
+   "probabilities": {
+    "otc_ok": 0.0122,
+    "see_doctor": 0.1811,
+    "emergency": 0.8067
+   },
+   "flags": {
+    "genital_area": 0.1974,
+    "anal_area": 0.114,
+    "bleeding": 0.8701,
+    "strong_pain": 0.475,
+    "long_duration": 0.1349
+   },
+   "decider_policy": "emergency",
+   "reasons": [
+    "Decider: emergency (never downgraded)"
+   ],
+   "rules_only": "see_doctor",
+   "ms": 2571.3
+  },
+  {
+   "id": 29,
+   "text": "My friend collapsed and is not responding.",
+   "expected": "emergency",
+   "decider_raw": "emergency",
+   "confidence": 0.8921,
+   "probabilities": {
+    "otc_ok": 0.0094,
+    "see_doctor": 0.0626,
+    "emergency": 0.9281
+   },
+   "flags": {
+    "genital_area": 0.2053,
+    "anal_area": 0.1034,
+    "bleeding": 0.1251,
+    "strong_pain": 0.2583,
+    "long_duration": 0.136
+   },
+   "decider_policy": "emergency",
+   "reasons": [
+    "Decider: emergency (never downgraded)"
+   ],
+   "rules_only": "otc_ok",
+   "ms": 2556.8
+  },
+  {
+   "id": 30,
+   "text": "Worst headache of my life came on suddenly like a thunderclap.",
+   "expected": "emergency",
+   "decider_raw": "emergency",
+   "confidence": 0.5807,
+   "probabilities": {
+    "otc_ok": 0.0277,
+    "see_doctor": 0.2518,
+    "emergency": 0.7205
+   },
+   "flags": {
+    "genital_area": 0.2494,
+    "anal_area": 0.1048,
+    "bleeding": 0.1372,
+    "strong_pain": 0.8505,
+    "long_duration": 0.1469
+   },
+   "decider_policy": "emergency",
+   "reasons": [
+    "Decider: emergency (never downgraded)"
+   ],
+   "rules_only": "otc_ok",
+   "ms": 2409.1
+  }
+ ]
+}

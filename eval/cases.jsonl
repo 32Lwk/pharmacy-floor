@@ -1,0 +1,30 @@
+{"id": 1, "text": "I have a mild headache since this morning, nothing else.", "expected": "otc_ok"}
+{"id": 2, "text": "Runny nose and sneezing since yesterday, probably a cold.", "expected": "otc_ok"}
+{"id": 3, "text": "My bottom has been itchy around the anus for two days.", "expected": "otc_ok"}
+{"id": 4, "text": "I think I have piles, a little sore when sitting, started this week.", "expected": "otc_ok"}
+{"id": 5, "text": "Heartburn after a big dinner last night.", "expected": "otc_ok"}
+{"id": 6, "text": "Slight sore throat this morning, no fever.", "expected": "otc_ok"}
+{"id": 7, "text": "I have a small cut on my finger from cooking.", "expected": "otc_ok"}
+{"id": 8, "text": "Mild muscle ache in my shoulders after the gym yesterday.", "expected": "otc_ok"}
+{"id": 9, "text": "My eyes are a bit dry and tired from screens.", "expected": "otc_ok"}
+{"id": 10, "text": "Hay fever again, itchy eyes and sneezing like every spring.", "expected": "otc_ok"}
+{"id": 11, "text": "A little constipated for two days.", "expected": "otc_ok"}
+{"id": 12, "text": "I got a few mosquito bites and they itch.", "expected": "otc_ok"}
+{"id": 13, "text": "My bottom is itchy and there was blood on the toilet paper.", "expected": "see_doctor"}
+{"id": 14, "text": "Hemorrhoid pain is really intense, I can hardly sit.", "expected": "see_doctor"}
+{"id": 15, "text": "The itching around my anus has gone on for over a month.", "expected": "see_doctor"}
+{"id": 16, "text": "I have itching in my genital area.", "expected": "see_doctor"}
+{"id": 17, "text": "There is a rash down there on my private parts.", "expected": "see_doctor"}
+{"id": 18, "text": "Burning feeling on my penis when I pee.", "expected": "see_doctor"}
+{"id": 19, "text": "Unusual discharge and itching in the vagina.", "expected": "see_doctor"}
+{"id": 20, "text": "A cough that has not gone away for three weeks.", "expected": "see_doctor"}
+{"id": 21, "text": "I found a lump in my neck that keeps growing.", "expected": "see_doctor"}
+{"id": 22, "text": "Fever of 38.5 that has lasted four days.", "expected": "see_doctor"}
+{"id": 23, "text": "Stomach pain that keeps getting worse over several days.", "expected": "see_doctor"}
+{"id": 24, "text": "Headaches almost every day for the last two months.", "expected": "see_doctor"}
+{"id": 25, "text": "Sudden chest pain and I can't breathe properly.", "expected": "emergency"}
+{"id": 26, "text": "My father's face is drooping on one side and his speech is slurred.", "expected": "emergency"}
+{"id": 27, "text": "After eating peanuts my throat feels tight and my lips are swelling.", "expected": "emergency"}
+{"id": 28, "text": "I vomited a lot of blood just now.", "expected": "emergency"}
+{"id": 29, "text": "My friend collapsed and is not responding.", "expected": "emergency"}
+{"id": 30, "text": "Worst headache of my life came on suddenly like a thunderclap.", "expected": "emergency"}
