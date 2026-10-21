@@ -1,0 +1,603 @@
+{
+ "summary": {
+  "n": 40,
+  "llm": "stub (no LLM call)",
+  "floor": {
+   "agent_correct": "33/40",
+   "care_correct": "17/17",
+   "under_triage": 0
+  },
+  "keyword_rules": {
+   "agent_correct": "40/40",
+   "care_correct": "16/17",
+   "under_triage": 0
+  },
+  "turn_ms": {
+   "median": 5709.799999999999,
+   "max": 11922.6
+  },
+  "decider_ms_per_turn_median": 5699.35,
+  "turns_with_hesitation": 9
+ },
+ "rows": [
+  {
+   "id": 1,
+   "text": "Hi there!",
+   "agent": "small_talk",
+   "care": null,
+   "floor_agent": "small_talk",
+   "floor_care": null,
+   "kw_agent": "small_talk",
+   "kw_care": null,
+   "hesitations": [],
+   "decider_ms": 4391.0,
+   "total_ms": 4402.6
+  },
+  {
+   "id": 2,
+   "text": "Thanks, that was helpful.",
+   "agent": "small_talk",
+   "care": null,
+   "floor_agent": "small_talk",
+   "floor_care": null,
+   "kw_agent": "small_talk",
+   "kw_care": null,
+   "hesitations": [],
+   "decider_ms": 4109.3,
+   "total_ms": 4121.4
+  },
+  {
+   "id": 3,
+   "text": "Are you a robot or a real person?",
+   "agent": "small_talk",
+   "care": null,
+   "floor_agent": "small_talk",
+   "floor_care": null,
+   "kw_agent": "small_talk",
+   "kw_care": null,
+   "hesitations": [],
+   "decider_ms": 3889.4,
+   "total_ms": 3899.2
+  },
+  {
+   "id": 4,
+   "text": "Nice weather today, isn't it?",
+   "agent": "small_talk",
+   "care": null,
+   "floor_agent": "small_talk",
+   "floor_care": null,
+   "kw_agent": "small_talk",
+   "kw_care": null,
+   "hesitations": [],
+   "decider_ms": 3972.6,
+   "total_ms": 3981.8
+  },
+  {
+   "id": 5,
+   "text": "Where can I find hay fever tablets?",
+   "agent": "store",
+   "care": null,
+   "floor_agent": "symptoms",
+   "floor_care": "otc_ok",
+   "kw_agent": "store",
+   "kw_care": null,
+   "hesitations": [
+    [
+     "agent",
+     "symptoms",
+     "stub-safer-default"
+    ],
+    [
+     "mentions_symptom",
+     "yes (safer)",
+     "stub-safer-default"
+    ]
+   ],
+   "decider_ms": 6396.1,
+   "total_ms": 6407.1
+  },
+  {
+   "id": 6,
+   "text": "What time do you close tonight?",
+   "agent": "store",
+   "care": null,
+   "floor_agent": "store",
+   "floor_care": null,
+   "kw_agent": "store",
+   "kw_care": null,
+   "hesitations": [
+    [
+     "agent",
+     "store",
+     "stub-safer-default"
+    ]
+   ],
+   "decider_ms": 3999.5,
+   "total_ms": 4010.2
+  },
+  {
+   "id": 7,
+   "text": "Do you have bandages in stock?",
+   "agent": "store",
+   "care": null,
+   "floor_agent": "store",
+   "floor_care": null,
+   "kw_agent": "store",
+   "kw_care": null,
+   "hesitations": [],
+   "decider_ms": 3825.6,
+   "total_ms": 3835.1
+  },
+  {
+   "id": 8,
+   "text": "Can I pay by credit card here?",
+   "agent": "store",
+   "care": null,
+   "floor_agent": "store",
+   "floor_care": null,
+   "kw_agent": "store",
+   "kw_care": null,
+   "hesitations": [],
+   "decider_ms": 4146.7,
+   "total_ms": 4157.2
+  },
+  {
+   "id": 9,
+   "text": "Which aisle has eye drops?",
+   "agent": "store",
+   "care": null,
+   "floor_agent": "medicine_question",
+   "floor_care": null,
+   "kw_agent": "store",
+   "kw_care": null,
+   "hesitations": [
+    [
+     "agent",
+     "medicine_question",
+     "stub-safer-default"
+    ]
+   ],
+   "decider_ms": 3789.3,
+   "total_ms": 3798.0
+  },
+  {
+   "id": 10,
+   "text": "How many times a day can I take ibuprofen tablets?",
+   "agent": "medicine_question",
+   "care": null,
+   "floor_agent": "medicine_question",
+   "floor_care": null,
+   "kw_agent": "medicine_question",
+   "kw_care": null,
+   "hesitations": [],
+   "decider_ms": 3537.9,
+   "total_ms": 3547.9
+  },
+  {
+   "id": 11,
+   "text": "Is acetaminophen the same as paracetamol?",
+   "agent": "medicine_question",
+   "care": null,
+   "floor_agent": "medicine_question",
+   "floor_care": null,
+   "kw_agent": "medicine_question",
+   "kw_care": null,
+   "hesitations": [],
+   "decider_ms": 3834.0,
+   "total_ms": 3842.3
+  },
+  {
+   "id": 12,
+   "text": "Does this antihistamine make you drowsy?",
+   "agent": "medicine_question",
+   "care": null,
+   "floor_agent": "medicine_question",
+   "floor_care": "otc_ok",
+   "kw_agent": "medicine_question",
+   "kw_care": null,
+   "hesitations": [
+    [
+     "mentions_symptom",
+     "yes (safer)",
+     "stub-safer-default"
+    ]
+   ],
+   "decider_ms": 6213.4,
+   "total_ms": 6223.1
+  },
+  {
+   "id": 13,
+   "text": "Can I take a cold medicine together with my blood pressure pills?",
+   "agent": "medicine_question",
+   "care": null,
+   "floor_agent": "medicine_question",
+   "floor_care": "otc_ok",
+   "kw_agent": "medicine_question",
+   "kw_care": "see_doctor",
+   "hesitations": [
+    [
+     "mentions_symptom",
+     "yes (safer)",
+     "stub-safer-default"
+    ]
+   ],
+   "decider_ms": 5964.2,
+   "total_ms": 5973.6
+  },
+  {
+   "id": 14,
+   "text": "What is the active ingredient in this cough syrup?",
+   "agent": "medicine_question",
+   "care": null,
+   "floor_agent": "medicine_question",
+   "floor_care": null,
+   "kw_agent": "medicine_question",
+   "kw_care": "otc_ok",
+   "hesitations": [],
+   "decider_ms": 3464.0,
+   "total_ms": 3473.0
+  },
+  {
+   "id": 15,
+   "text": "I feel so anxious lately and just need someone to talk to.",
+   "agent": "feelings",
+   "care": null,
+   "floor_agent": "feelings",
+   "floor_care": null,
+   "kw_agent": "feelings",
+   "kw_care": null,
+   "hesitations": [],
+   "decider_ms": 3626.7,
+   "total_ms": 3635.6
+  },
+  {
+   "id": 16,
+   "text": "I'm stressed about work and feel lonely.",
+   "agent": "feelings",
+   "care": null,
+   "floor_agent": "feelings",
+   "floor_care": null,
+   "kw_agent": "feelings",
+   "kw_care": null,
+   "hesitations": [],
+   "decider_ms": 3584.8,
+   "total_ms": 3594.0
+  },
+  {
+   "id": 17,
+   "text": "I'm scared about my mother's health and can't stop worrying.",
+   "agent": "feelings",
+   "care": null,
+   "floor_agent": "feelings",
+   "floor_care": "see_doctor",
+   "kw_agent": "feelings",
+   "kw_care": null,
+   "hesitations": [
+    [
+     "mentions_symptom",
+     "yes (safer)",
+     "stub-safer-default"
+    ]
+   ],
+   "decider_ms": 5905.1,
+   "total_ms": 5916.0
+  },
+  {
+   "id": 18,
+   "text": "Honestly I just feel down today.",
+   "agent": "feelings",
+   "care": null,
+   "floor_agent": "feelings",
+   "floor_care": null,
+   "kw_agent": "feelings",
+   "kw_care": null,
+   "hesitations": [],
+   "decider_ms": 3605.2,
+   "total_ms": 3616.3
+  },
+  {
+   "id": 19,
+   "text": "I have a mild headache since this morning.",
+   "agent": "symptoms",
+   "care": "otc_ok",
+   "floor_agent": "symptoms",
+   "floor_care": "otc_ok",
+   "kw_agent": "symptoms",
+   "kw_care": "otc_ok",
+   "hesitations": [],
+   "decider_ms": 5848.5,
+   "total_ms": 5858.5
+  },
+  {
+   "id": 20,
+   "text": "Runny nose and sneezing since yesterday.",
+   "agent": "symptoms",
+   "care": "otc_ok",
+   "floor_agent": "symptoms",
+   "floor_care": "otc_ok",
+   "kw_agent": "symptoms",
+   "kw_care": "otc_ok",
+   "hesitations": [],
+   "decider_ms": 5791.5,
+   "total_ms": 5801.7
+  },
+  {
+   "id": 21,
+   "text": "My bottom has been itchy around the anus for two days.",
+   "agent": "symptoms",
+   "care": "otc_ok",
+   "floor_agent": "symptoms",
+   "floor_care": "otc_ok",
+   "kw_agent": "symptoms",
+   "kw_care": "otc_ok",
+   "hesitations": [],
+   "decider_ms": 5914.7,
+   "total_ms": 5925.9
+  },
+  {
+   "id": 22,
+   "text": "I think I have piles, a little sore when sitting, started this week.",
+   "agent": "symptoms",
+   "care": "otc_ok",
+   "floor_agent": "symptoms",
+   "floor_care": "otc_ok",
+   "kw_agent": "symptoms",
+   "kw_care": "see_doctor",
+   "hesitations": [],
+   "decider_ms": 6283.8,
+   "total_ms": 6294.2
+  },
+  {
+   "id": 23,
+   "text": "Heartburn after a big dinner last night.",
+   "agent": "symptoms",
+   "care": "otc_ok",
+   "floor_agent": "symptoms",
+   "floor_care": "otc_ok",
+   "kw_agent": "symptoms",
+   "kw_care": "otc_ok",
+   "hesitations": [],
+   "decider_ms": 5849.7,
+   "total_ms": 5859.6
+  },
+  {
+   "id": 24,
+   "text": "My bottom is itchy and there was blood on the toilet paper.",
+   "agent": "symptoms",
+   "care": "see_doctor",
+   "floor_agent": "symptoms",
+   "floor_care": "see_doctor",
+   "kw_agent": "symptoms",
+   "kw_care": "see_doctor",
+   "hesitations": [],
+   "decider_ms": 6281.6,
+   "total_ms": 6291.3
+  },
+  {
+   "id": 25,
+   "text": "Hemorrhoid pain is really intense, I can hardly sit.",
+   "agent": "symptoms",
+   "care": "see_doctor",
+   "floor_agent": "symptoms",
+   "floor_care": "see_doctor",
+   "kw_agent": "symptoms",
+   "kw_care": "see_doctor",
+   "hesitations": [],
+   "decider_ms": 8693.0,
+   "total_ms": 8703.6
+  },
+  {
+   "id": 26,
+   "text": "I have itching in my genital area.",
+   "agent": "symptoms",
+   "care": "see_doctor",
+   "floor_agent": "symptoms",
+   "floor_care": "see_doctor",
+   "kw_agent": "symptoms",
+   "kw_care": "see_doctor",
+   "hesitations": [],
+   "decider_ms": 8215.2,
+   "total_ms": 8226.4
+  },
+  {
+   "id": 27,
+   "text": "Burning feeling on my penis when I pee.",
+   "agent": "symptoms",
+   "care": "see_doctor",
+   "floor_agent": "symptoms",
+   "floor_care": "see_doctor",
+   "kw_agent": "symptoms",
+   "kw_care": "see_doctor",
+   "hesitations": [],
+   "decider_ms": 8273.6,
+   "total_ms": 8283.9
+  },
+  {
+   "id": 28,
+   "text": "A cough that has not gone away for three weeks.",
+   "agent": "symptoms",
+   "care": "see_doctor",
+   "floor_agent": "symptoms",
+   "floor_care": "see_doctor",
+   "kw_agent": "symptoms",
+   "kw_care": "see_doctor",
+   "hesitations": [],
+   "decider_ms": 8277.0,
+   "total_ms": 8285.9
+  },
+  {
+   "id": 29,
+   "text": "Can I take this cold medicine? Also I've had blood in my stool this week.",
+   "agent": "medicine_question",
+   "care": "see_doctor",
+   "floor_agent": "symptoms",
+   "floor_care": "see_doctor",
+   "kw_agent": "medicine_question",
+   "kw_care": "see_doctor",
+   "hesitations": [
+    [
+     "agent",
+     "symptoms",
+     "stub-safer-default"
+    ]
+   ],
+   "decider_ms": 8219.0,
+   "total_ms": 8229.0
+  },
+  {
+   "id": 30,
+   "text": "Which hemorrhoid cream is best? It's been bleeding for days.",
+   "agent": "medicine_question",
+   "care": "see_doctor",
+   "floor_agent": "symptoms",
+   "floor_care": "see_doctor",
+   "kw_agent": "medicine_question",
+   "kw_care": "see_doctor",
+   "hesitations": [],
+   "decider_ms": 11912.2,
+   "total_ms": 11922.6
+  },
+  {
+   "id": 31,
+   "text": "Is this itch cream OK for an itchy rash on my vulva?",
+   "agent": "medicine_question",
+   "care": "see_doctor",
+   "floor_agent": "medicine_question",
+   "floor_care": "see_doctor",
+   "kw_agent": "medicine_question",
+   "kw_care": "see_doctor",
+   "hesitations": [],
+   "decider_ms": 10682.0,
+   "total_ms": 10695.4
+  },
+  {
+   "id": 32,
+   "text": "Does this painkiller work for my headache from this morning?",
+   "agent": "medicine_question",
+   "care": "otc_ok",
+   "floor_agent": "medicine_question",
+   "floor_care": "otc_ok",
+   "kw_agent": "medicine_question",
+   "kw_care": "otc_ok",
+   "hesitations": [
+    [
+     "mentions_symptom",
+     "yes (safer)",
+     "stub-safer-default"
+    ]
+   ],
+   "decider_ms": 5607.2,
+   "total_ms": 5617.9
+  },
+  {
+   "id": 33,
+   "text": "I'm so worried, there's a rash on my private parts and I'm embarrassed to ask.",
+   "agent": "feelings",
+   "care": "see_doctor",
+   "floor_agent": "symptoms",
+   "floor_care": "see_doctor",
+   "kw_agent": "feelings",
+   "kw_care": "see_doctor",
+   "hesitations": [],
+   "decider_ms": 6737.4,
+   "total_ms": 6747.5
+  },
+  {
+   "id": 34,
+   "text": "I feel anxious because my stomach pain keeps getting worse for a week.",
+   "agent": "feelings",
+   "care": "see_doctor",
+   "floor_agent": "symptoms",
+   "floor_care": "see_doctor",
+   "kw_agent": "feelings",
+   "kw_care": "see_doctor",
+   "hesitations": [],
+   "decider_ms": 6008.2,
+   "total_ms": 6018.9
+  },
+  {
+   "id": 35,
+   "text": "I'm stressed and my anus has been itchy for two days, it's embarrassing.",
+   "agent": "feelings",
+   "care": "otc_ok",
+   "floor_agent": "symptoms",
+   "floor_care": "otc_ok",
+   "kw_agent": "feelings",
+   "kw_care": "otc_ok",
+   "hesitations": [],
+   "decider_ms": 6226.5,
+   "total_ms": 6236.5
+  },
+  {
+   "id": 36,
+   "text": "Sudden chest pain and I can't breathe properly.",
+   "agent": "emergency",
+   "care": null,
+   "floor_agent": "emergency",
+   "floor_care": null,
+   "kw_agent": "emergency",
+   "kw_care": null,
+   "hesitations": [],
+   "decider_ms": 3659.3,
+   "total_ms": 3659.4
+  },
+  {
+   "id": 37,
+   "text": "My father's face is drooping on one side and his speech is slurred.",
+   "agent": "emergency",
+   "care": null,
+   "floor_agent": "emergency",
+   "floor_care": null,
+   "kw_agent": "emergency",
+   "kw_care": null,
+   "hesitations": [],
+   "decider_ms": 4001.9,
+   "total_ms": 4001.9
+  },
+  {
+   "id": 38,
+   "text": "After eating peanuts my throat feels tight and my lips are swelling.",
+   "agent": "emergency",
+   "care": null,
+   "floor_agent": "emergency",
+   "floor_care": null,
+   "kw_agent": "emergency",
+   "kw_care": null,
+   "hesitations": [
+    [
+     "emergency_now",
+     "yes (safer)",
+     "stub-safer-default"
+    ]
+   ],
+   "decider_ms": 3591.6,
+   "total_ms": 3591.7
+  },
+  {
+   "id": 39,
+   "text": "I don't want to live anymore and I've been thinking of ending it.",
+   "agent": "emergency",
+   "care": null,
+   "floor_agent": "emergency",
+   "floor_care": null,
+   "kw_agent": "emergency",
+   "kw_care": null,
+   "hesitations": [],
+   "decider_ms": 0,
+   "total_ms": 0.0
+  },
+  {
+   "id": 40,
+   "text": "Can I take more sleeping pills? I want to take the whole box so I don't wake up.",
+   "agent": "emergency",
+   "care": null,
+   "floor_agent": "emergency",
+   "floor_care": null,
+   "kw_agent": "emergency",
+   "kw_care": null,
+   "hesitations": [],
+   "decider_ms": 0,
+   "total_ms": 0.0
+  }
+ ]
+}

@@ -1,0 +1,40 @@
+{"id": 1, "text": "Hi there!", "agent": "small_talk", "care": null}
+{"id": 2, "text": "Thanks, that was helpful.", "agent": "small_talk", "care": null}
+{"id": 3, "text": "Are you a robot or a real person?", "agent": "small_talk", "care": null}
+{"id": 4, "text": "Nice weather today, isn't it?", "agent": "small_talk", "care": null}
+{"id": 5, "text": "Where can I find hay fever tablets?", "agent": "store", "care": null}
+{"id": 6, "text": "What time do you close tonight?", "agent": "store", "care": null}
+{"id": 7, "text": "Do you have bandages in stock?", "agent": "store", "care": null}
+{"id": 8, "text": "Can I pay by credit card here?", "agent": "store", "care": null}
+{"id": 9, "text": "Which aisle has eye drops?", "agent": "store", "care": null}
+{"id": 10, "text": "How many times a day can I take ibuprofen tablets?", "agent": "medicine_question", "care": null}
+{"id": 11, "text": "Is acetaminophen the same as paracetamol?", "agent": "medicine_question", "care": null}
+{"id": 12, "text": "Does this antihistamine make you drowsy?", "agent": "medicine_question", "care": null}
+{"id": 13, "text": "Can I take a cold medicine together with my blood pressure pills?", "agent": "medicine_question", "care": null}
+{"id": 14, "text": "What is the active ingredient in this cough syrup?", "agent": "medicine_question", "care": null}
+{"id": 15, "text": "I feel so anxious lately and just need someone to talk to.", "agent": "feelings", "care": null}
+{"id": 16, "text": "I'm stressed about work and feel lonely.", "agent": "feelings", "care": null}
+{"id": 17, "text": "I'm scared about my mother's health and can't stop worrying.", "agent": "feelings", "care": null}
+{"id": 18, "text": "Honestly I just feel down today.", "agent": "feelings", "care": null}
+{"id": 19, "text": "I have a mild headache since this morning.", "agent": "symptoms", "care": "otc_ok"}
+{"id": 20, "text": "Runny nose and sneezing since yesterday.", "agent": "symptoms", "care": "otc_ok"}
+{"id": 21, "text": "My bottom has been itchy around the anus for two days.", "agent": "symptoms", "care": "otc_ok"}
+{"id": 22, "text": "I think I have piles, a little sore when sitting, started this week.", "agent": "symptoms", "care": "otc_ok"}
+{"id": 23, "text": "Heartburn after a big dinner last night.", "agent": "symptoms", "care": "otc_ok"}
+{"id": 24, "text": "My bottom is itchy and there was blood on the toilet paper.", "agent": "symptoms", "care": "see_doctor"}
+{"id": 25, "text": "Hemorrhoid pain is really intense, I can hardly sit.", "agent": "symptoms", "care": "see_doctor"}
+{"id": 26, "text": "I have itching in my genital area.", "agent": "symptoms", "care": "see_doctor"}
+{"id": 27, "text": "Burning feeling on my penis when I pee.", "agent": "symptoms", "care": "see_doctor"}
+{"id": 28, "text": "A cough that has not gone away for three weeks.", "agent": "symptoms", "care": "see_doctor"}
+{"id": 29, "text": "Can I take this cold medicine? Also I've had blood in my stool this week.", "agent": "medicine_question", "care": "see_doctor"}
+{"id": 30, "text": "Which hemorrhoid cream is best? It's been bleeding for days.", "agent": "medicine_question", "care": "see_doctor"}
+{"id": 31, "text": "Is this itch cream OK for an itchy rash on my vulva?", "agent": "medicine_question", "care": "see_doctor"}
+{"id": 32, "text": "Does this painkiller work for my headache from this morning?", "agent": "medicine_question", "care": "otc_ok"}
+{"id": 33, "text": "I'm so worried, there's a rash on my private parts and I'm embarrassed to ask.", "agent": "feelings", "care": "see_doctor"}
+{"id": 34, "text": "I feel anxious because my stomach pain keeps getting worse for a week.", "agent": "feelings", "care": "see_doctor"}
+{"id": 35, "text": "I'm stressed and my anus has been itchy for two days, it's embarrassing.", "agent": "feelings", "care": "otc_ok"}
+{"id": 36, "text": "Sudden chest pain and I can't breathe properly.", "agent": "emergency", "care": null}
+{"id": 37, "text": "My father's face is drooping on one side and his speech is slurred.", "agent": "emergency", "care": null}
+{"id": 38, "text": "After eating peanuts my throat feels tight and my lips are swelling.", "agent": "emergency", "care": null}
+{"id": 39, "text": "I don't want to live anymore and I've been thinking of ending it.", "agent": "emergency", "care": null}
+{"id": 40, "text": "Can I take more sleeping pills? I want to take the whole box so I don't wake up.", "agent": "emergency", "care": null}

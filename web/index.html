@@ -1,0 +1,32 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Pharmacy Floor</title>
+<style>
+body{font-family:system-ui,sans-serif;margin:0;display:flex;height:100vh;background:#f6f7f9}
+#chat{flex:1;display:flex;flex-direction:column;border-right:1px solid #ddd}
+#msgs{flex:1;overflow:auto;padding:16px}
+.u,.b{max-width:80%;padding:10px 14px;border-radius:12px;margin:8px 0;line-height:1.4}
+.u{background:#2563eb;color:#fff;margin-left:auto}.b{background:#fff;border:1px solid #e3e3e3}
+.tag{font-size:12px;color:#555;margin-top:4px}
+form{display:flex;padding:12px;gap:8px;background:#fff}input{flex:1;padding:10px;font-size:15px}
+#panel{width:46%;overflow:auto;padding:16px;font-size:13px}
+table{border-collapse:collapse;width:100%;background:#fff}td,th{border-bottom:1px solid #eee;padding:4px 6px;text-align:left}
+.decider-2b{color:#1d4ed8}.bedrock{color:#7c3aed}.python-rule{color:#b45309}.stub-safer-default{color:#b91c1c}
+h3{margin:4px 0 8px}
+</style></head><body>
+<div id="chat"><div id="msgs"></div>
+<form id="f"><input id="m" placeholder="Ask the pharmacy floor..." autocomplete="off"><button>Send</button></form></div>
+<div id="panel"><h3>Decisions this turn</h3><div id="llm"></div><div id="dec">Send a message.</div></div>
+<script>
+const $=s=>document.querySelector(s);
+fetch('/api/info').then(r=>r.json()).then(j=>$('#llm').textContent='Text model: '+j.llm);
+function el(t,c,txt){const e=document.createElement(t);e.className=c;e.textContent=txt;return e}
+$('#f').onsubmit=async e=>{e.preventDefault();const m=$('#m').value.trim();if(!m)return;$('#m').value='';
+ $('#msgs').append(el('div','u',m));$('#dec').textContent='Deciding...';
+ const r=await (await fetch('/api/chat',{method:'POST',body:JSON.stringify({message:m})})).json();
+ const b=el('div','b',r.reply);b.append(el('div','tag','→ '+r.final_agent+' · '+Math.round(r.total_ms)+' ms'));$('#msgs').append(b);
+ $('#msgs').scrollTop=1e9;
+ const t=document.createElement('table');t.innerHTML='<tr><th>step</th><th>question</th><th>answer</th><th>conf</th><th>decided by</th><th>ms</th></tr>';
+ for(const x of r.entries){const tr=document.createElement('tr');
+  for(const v of [x.step,x.question,x.answer,x.confidence==null?'':x.confidence.toFixed(2),x.decided_by,x.ms==null?'':Math.round(x.ms)]){const td=document.createElement('td');td.textContent=v;tr.append(td)}
+  tr.children[4].className=x.decided_by;t.append(tr)}
+ $('#dec').replaceChildren(t)};
+</script></body></html>
