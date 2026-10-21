@@ -13,6 +13,24 @@ def test_thresholds_are_ordered():
     assert C.REPLY_ON_TOPIC_HANDOFF < C.REPLY_ON_TOPIC_PROCEED
 
 
+def test_band_edges_follow_one_convention():
+    # p >= high -> high side; low <= p < high -> middle; p < low -> low side
+    assert C.flag_band(C.FLAG_YES) == "yes" and C.flag_band(C.FLAG_NO) == "unsure" and C.flag_band(C.FLAG_NO - 0.01) == "no"
+    assert C.band(C.AGENT_PROCEED, C.AGENT_PROCEED, C.AGENT_HANDOFF) == "proceed"
+    assert C.band(C.AGENT_HANDOFF, C.AGENT_PROCEED, C.AGENT_HANDOFF) == "middle"
+
+
+def test_recipes_read_thresholds_from_confidence():
+    from recipes.care_router import policy
+    assert policy.DEFAULT_CONFIDENCE_THRESHOLD == C.ROUTE_PROCEED
+    assert policy.FLAG_THRESHOLDS["genital_area"] == C.CARE_FLAG_YES_GENITAL and policy.DEFAULT_FLAG_THRESHOLD == C.CARE_FLAG_YES
+
+
+def test_shop_hint_is_asked_but_never_hesitant():
+    from recipes.turn_router.questions import AGENT_HINTS, build_questions
+    assert "shop_question" in build_questions(False, {}) and "shop_question" in AGENT_HINTS
+
+
 def test_bands():
     assert C.band(0.9, C.AGENT_PROCEED, C.AGENT_HANDOFF) == "proceed"
     assert C.band(0.5, C.AGENT_PROCEED, C.AGENT_HANDOFF) == "middle"
@@ -23,9 +41,9 @@ def test_bands():
 def test_added_questions_file_is_complete():
     qs = json.loads((ROOT / "rules" / "added_questions.json").read_text())
     for q in qs:
-        assert {"key", "label", "question", "true", "false", "yes_at", "on_yes", "added_for"} <= set(q)
+        assert {"key", "label", "question", "true", "false", "on_yes", "added_for"} <= set(q)
+        assert "yes_at" not in q  # thresholds live only in floor/confidence.py
         assert q["on_yes"] in ("self_harm", "emergency_now", "danger_sign") and q["step"] in ("safety", "symptom")
-        assert 0 < q["yes_at"] < 1
 
 
 def test_added_question_joins_the_turn_question_set():

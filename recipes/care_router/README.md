@@ -33,6 +33,6 @@ print(guard.last_decision.route, guard.last_decision.reasons)
 3. Ask **atomic** yes/no questions. In our tests, one combined question
    ("bleeding, strong pain, or long duration?") missed "blood on the toilet paper"
    (P(true)=0.19); a separate "any blood or bleeding?" question caught it (0.79).
-4. Set thresholds on **your own** traffic. Ours (route confidence 0.5, genital flag 0.4,
-   other flags 0.5) were picked by hand on 30 made-up cases.
+4. Set thresholds on **your own** traffic. Ours live in `floor/confidence.py` (`ROUTE_PROCEED` 0.50,
+   `CARE_FLAG_YES_GENITAL` 0.40, `CARE_FLAG_YES` 0.50) and were picked by hand on 30 made-up cases.
 5. Fail closed: the handler uses `on_error = "throw"`, so no decision means no reply.

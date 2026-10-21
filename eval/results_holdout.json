@@ -3,7 +3,7 @@
   "n": 12,
   "llm": "stub (no LLM call)",
   "floor": {
-   "agent_correct": "9/12",
+   "agent_correct": "10/12",
    "care_correct": "4/6",
    "under_triage": 0
   },
@@ -13,11 +13,11 @@
    "under_triage": 5
   },
   "turn_ms": {
-   "median": 3460.95,
-   "max": 4437.7
+   "median": 4030.0,
+   "max": 5304.7
   },
-  "decider_ms_per_turn_median": 3455.45,
-  "turns_with_hesitation": 2,
+  "decider_ms_per_turn_median": 4025.4,
+  "turns_with_hesitation": 1,
   "pharmacist_handoffs": 1
  },
  "rows": [
@@ -31,8 +31,8 @@
    "kw_agent": "small_talk",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2897.9,
-   "total_ms": 2906.0
+   "decider_ms": 3235.6,
+   "total_ms": 3244.4
   },
   {
    "id": 102,
@@ -44,21 +44,21 @@
    "kw_agent": "store",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3140.1,
-   "total_ms": 3150.9
+   "decider_ms": 3880.2,
+   "total_ms": 3891.2
   },
   {
    "id": 103,
    "text": "Do you sell nicotine gum?",
    "agent": "store",
    "care": null,
-   "floor_agent": "medicine_question",
+   "floor_agent": "store",
    "floor_care": null,
    "kw_agent": "small_talk",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2716.4,
-   "total_ms": 2724.0
+   "decider_ms": 3818.0,
+   "total_ms": 3826.2
   },
   {
    "id": 104,
@@ -70,8 +70,8 @@
    "kw_agent": "medicine_question",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2782.7,
-   "total_ms": 2790.6
+   "decider_ms": 3883.9,
+   "total_ms": 3892.5
   },
   {
    "id": 105,
@@ -83,8 +83,8 @@
    "kw_agent": "medicine_question",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 4431.1,
-   "total_ms": 4437.7
+   "decider_ms": 4766.9,
+   "total_ms": 4775.7
   },
   {
    "id": 106,
@@ -96,8 +96,8 @@
    "kw_agent": "small_talk",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3808.4,
-   "total_ms": 3808.6
+   "decider_ms": 3985.0,
+   "total_ms": 3985.1
   },
   {
    "id": 107,
@@ -109,8 +109,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 4287.4,
-   "total_ms": 4296.5
+   "decider_ms": 4583.4,
+   "total_ms": 4592.7
   },
   {
    "id": 108,
@@ -122,8 +122,8 @@
    "kw_agent": "small_talk",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 4248.0,
-   "total_ms": 4255.5
+   "decider_ms": 4491.2,
+   "total_ms": 4501.0
   },
   {
    "id": 109,
@@ -135,8 +135,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 4259.9,
-   "total_ms": 4267.4
+   "decider_ms": 5179.9,
+   "total_ms": 5190.0
   },
   {
    "id": 110,
@@ -147,15 +147,9 @@
    "floor_care": "see_doctor",
    "kw_agent": "small_talk",
    "kw_care": null,
-   "hesitations": [
-    [
-     "agent",
-     "symptoms",
-     "stub-safer-default"
-    ]
-   ],
-   "decider_ms": 3770.8,
-   "total_ms": 3771.0
+   "hesitations": [],
+   "decider_ms": 5304.5,
+   "total_ms": 5304.7
   },
   {
    "id": 111,
@@ -173,8 +167,8 @@
      "python-rule"
     ]
    ],
-   "decider_ms": 2060.8,
-   "total_ms": 2060.8
+   "decider_ms": 3610.6,
+   "total_ms": 3610.8
   },
   {
    "id": 112,
@@ -186,8 +180,8 @@
    "kw_agent": "small_talk",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2400.5,
-   "total_ms": 2409.2
+   "decider_ms": 4065.8,
+   "total_ms": 4074.9
   }
  ]
 }

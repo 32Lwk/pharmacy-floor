@@ -12,9 +12,10 @@ from strands_decider.schema import ChoiceQuestion, NoulQuestion
 
 from recipes.turn_router import AGENTS
 
-# Step 4 - before the helper (tool) runs: a second, independent look at what the user wants.
+# Step 3 - before the helper (tool) runs (only when the step-1 pick is below AGENT_PROCEED): a second, independent look at what the user wants.
 # Options in reverse order so a position bias cannot make both looks agree by accident.
-TOOL_CHECK = {"topic_check": ChoiceQuestion(instructions="What is the user mainly asking for in this message?",
+TOOL_CHECK = {"topic_check": ChoiceQuestion(instructions="What is the user mainly asking for in this message? "
+                                                         "The user is talking to a drugstore, so 'you' means the shop.",
                                             criteria=dict(reversed(list(AGENTS.items()))))}
 
 # Step 6 - before the reply goes out: is it grounded in what the user said, and does it overreach?

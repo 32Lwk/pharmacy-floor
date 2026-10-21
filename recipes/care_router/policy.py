@@ -10,11 +10,14 @@ from dataclasses import dataclass, field
 
 from .questions import DANGER_KEYS, ROUTES
 
-DEFAULT_CONFIDENCE_THRESHOLD = 0.5  # hand-picked; measure on your own traffic
+# Thresholds live in ONE place: floor/confidence.py (hand-picked; measure on your own traffic).
+from floor.confidence import CARE_FLAG_YES, CARE_FLAG_YES_GENITAL, ROUTE_PROCEED
+
+DEFAULT_CONFIDENCE_THRESHOLD = ROUTE_PROCEED
 # P(true) above which a yes/no flag counts as "yes". Hand-picked, asymmetric on purpose:
 # missing a genital-area symptom is the costly error, so that flag trips earlier.
-FLAG_THRESHOLDS = {"genital_area": 0.4}
-DEFAULT_FLAG_THRESHOLD = 0.5
+FLAG_THRESHOLDS = {"genital_area": CARE_FLAG_YES_GENITAL}
+DEFAULT_FLAG_THRESHOLD = CARE_FLAG_YES
 
 
 @dataclass

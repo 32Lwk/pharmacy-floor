@@ -4,12 +4,12 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass, field
 
-from .questions import AGENTS, build_questions, load_added
+from .questions import AGENT_HINTS, AGENTS, build_questions, load_added
 
-# Hand-picked, not tuned on the eval set.
-AGENT_CONFIDENCE_FLOOR = 0.5           # below -> hesitant about the agent choice
-SAFETY_BAND = (0.4, 0.6)               # P(true) inside -> hesitant. Hand-picked: unrelated yes/no questions sat at 0.1-0.36 in our runs
-SAFETY_YES = 0.6                       # at/above -> flag is yes
+# Thresholds live in ONE place: floor/confidence.py. A yes/no with FLAG_NO <= P < FLAG_YES is "unsure"
+# (hesitant); P >= FLAG_YES is yes. The agent choice is not marked hesitant here: the floor compares its
+# confidence with AGENT_PROCEED / AGENT_HANDOFF.
+from floor.confidence import FLAG_NO, FLAG_YES
 
 
 @dataclass
@@ -22,7 +22,7 @@ class TurnDecision:
     ms: float = 0.0
 
     def yes(self, key: str) -> bool:
-        return self.flags.get(key, 0.0) >= SAFETY_YES
+        return self.flags.get(key, 0.0) >= FLAG_YES
 
 
 class TurnRouter:
@@ -38,11 +38,9 @@ class TurnRouter:
         a = ans["agent"]
         flags = {k: v.noul for k, v in ans.items() if v.type == "noul"}
         d = TurnDecision(a.choice, a.confidence, dict(a.probabilities), flags, ms=ms)
-        if a.confidence < AGENT_CONFIDENCE_FLOOR:
-            d.hesitant_on.append("agent")
         if "agent_check" in ans and ans["agent_check"].choice != a.choice:
             d.hesitant_on.append("agent")
-        d.hesitant_on += [k for k, p in flags.items() if SAFETY_BAND[0] <= p < SAFETY_BAND[1]]
+        d.hesitant_on += [k for k, p in flags.items() if FLAG_NO <= p < FLAG_YES and k not in AGENT_HINTS]
         return d
 
 

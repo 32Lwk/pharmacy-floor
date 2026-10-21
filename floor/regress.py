@@ -1,7 +1,7 @@
 """Run rules/regression_cases.jsonl through the full floor (stub LLM: no Bedrock calls).
 
   python -m floor.regress                          # current rules
-  python -m floor.regress --before bleeding        # same, without that added question (shows the miss it fixed)
+  python -m floor.regress --before bleeding        # without the added question 'bleeding' (shows the miss it fixed)
 """
 from __future__ import annotations
 
@@ -29,7 +29,8 @@ def run(before: str | None = None, cases: Path = CASES) -> list[dict]:
     for c in map(json.loads, open(cases)):
         log = floor.handle(c["text"])
         route = next((e.answer.split()[0] for e in log.entries if e.question == "route"), None)
-        p = {k: next((e.confidence for e in log.entries if e.question == k), None) for k in c.get("show", [])}
+        p = {k: next((round(e.confidence, 2) for e in log.entries if e.question == k and e.confidence is not None), None)
+             for k in c.get("show", [])}
         ok = (log.final_agent == c["expect_agent"]) if "expect_agent" in c else (log.final_agent != c["expect_not_agent"])
         if "expect_route" in c:
             ok = ok and route == c["expect_route"]
@@ -39,7 +40,7 @@ def run(before: str | None = None, cases: Path = CASES) -> list[dict]:
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("--before", help="drop this added question and the crisis-word gate to show the miss it fixes")
+    ap.add_argument("--before", metavar="KEY", help="run without the added question KEY (e.g. bleeding) to show the miss it fixed")
     rows = run(ap.parse_args().before)
     for r in rows:
         print(("PASS " if r["ok"] else "FAIL ") + json.dumps(r))

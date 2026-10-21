@@ -6,7 +6,6 @@
   "question": "Does the user report any blood or bleeding?",
   "true": "blood or bleeding is mentioned",
   "false": "no blood or bleeding is mentioned",
-  "yes_at": 0.5,
   "on_yes": "danger_sign",
   "added_for": "One combined danger-sign question ('bleeding, strong pain, or lasting long?') scored 'blood on the toilet paper' at P=0.19, so the anal-itch rule allowed OTC. This separate question scored it 0.79 -> see_doctor.",
   "added_on": "Care Router v1 (moved to this file 2026-10-22)"

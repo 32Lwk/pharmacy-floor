@@ -30,8 +30,11 @@ whose tools are the five specialists (agents-as-tools, `@tool` functions that ea
 
 ## Low confidence ("hesitation band", `router.py`)
 
-- `agent` confidence < 0.5 → hesitant.
-- a yes/no with 0.4 ≤ P(true) < 0.6 → hesitant (P ≥ 0.6 counts as yes).
+Thresholds are defined once, in `floor/confidence.py`, and imported here.
+- a yes/no with `FLAG_NO` (0.40) ≤ P(true) < `FLAG_YES` (0.60) → hesitant; P ≥ 0.60 counts as yes.
+- the agent choice is not marked hesitant by the router; the floor compares its confidence with
+  `AGENT_PROCEED` (0.60) and `AGENT_HANDOFF` (0.35).
+- Emergency and self-harm are never sent to an LLM: unsure counts as yes.
 - Hesitant answers go to Bedrock (one short classification call). Offline, or if Bedrock's answer
   cannot be parsed, the safer default is used: safety flags become "yes"; an unsure agent becomes
   `symptoms` when a symptom may be present.

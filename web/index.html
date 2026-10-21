@@ -78,10 +78,10 @@ function el(t,c,txt){const e=document.createElement(t);if(c)e.className=c;if(txt
 for(const s of SAMPLES){const c=el('span','chip',s);c.onclick=()=>{$('#m').value=s;$('#m').focus()};$('#chips').append(c)}
 fetch('/api/info').then(r=>r.json()).then(j=>$('#llm').textContent='text model: '+j.llm);
 $('#tg').onclick=()=>{showAll=!showAll;$('#tg').textContent=showAll?'hide technical details':'show technical details';if(last)render(last)};
-const STEPS=[['who','Who should answer?','Decider picks one of five helpers'],['safety','Safety checks','asked on every message'],
- ['before_tool','Before the helper runs','an independent second look'],['second_look','Double-checks','only when the model was unsure'],
- ['symptom','Symptom check','Care Router, when a body problem is mentioned'],['write','Writing the reply','the only step that uses a text model'],
- ['before_reply','Before the reply goes out','typed checks on the written text'],['handoff','Hand-off','a person takes over']];
+const STEPS=[['who','1','Who should answer?','Decider picks one of five helpers'],['safety','2','Safety checks','asked on every message'],
+ ['before_tool','3','Before the helper runs','second look, only if step 1 was below 60% sure'],['second_look','+','Double-checks','only when the model was unsure'],
+ ['symptom','4','Symptom check','Care Router, when a body problem is mentioned'],['write','5','Writing the reply','the only step that uses a text model'],
+ ['before_reply','6','Before the reply goes out','typed checks on the written text'],['handoff','→','Hand-off','a person takes over']];
 const OUT={proceed:'OK',safer:'Extra care',second_look:'Double-check',handoff:'Pharmacist',stop:'Stop',info:'—'};
 const BY={'decider-2b':'Decider 2B','python-rule':'Rule','bedrock':'Bedrock','stub':'Stub','stub-safer-default':'Safer default'};
 const CHOICE=new Set(['agent','topic_check','route']);
@@ -97,9 +97,9 @@ function render(r){
  const sum=el('div','sum');const big=el('div','card big');big.style.borderColor=ho?'#fb923c':em?'#ef4444':'#22c55e';
  big.append(el('div','k','result'),el('div','v',HELPER[r.final_agent]||r.final_agent));sum.append(big);
  for(const [k,v] of [['typed questions',dec.length+' answered'],['decision time',dec.length?Math.round(dms)+' ms':'—'],['text-model calls',String(llm)],['whole turn',Math.round(r.total_ms)+' ms']]){const c=el('div','card');c.append(el('div','k',k),el('div','v',v));sum.append(c)}
- const out=el('div',showAll?'tech':'');out.append(sum);let n=0;
- for(const [step,title,hint] of STEPS){const es=r.entries.filter(e=>e.step===step);if(!es.length)continue;n++;
-  const box=el('div','step');const h=el('h3');h.append(el('span','n',String(n)),document.createTextNode(title),el('span','hint','· '+hint));box.append(h);
+ const out=el('div',showAll?'tech':'');out.append(sum);
+ for(const [step,num,title,hint] of STEPS){const es=r.entries.filter(e=>e.step===step);if(!es.length)continue;
+  const box=el('div','step');const h=el('h3');h.append(el('span','n',num),document.createTextNode(title),el('span','hint','· '+hint));box.append(h);
   for(const e of es){const row=el('div','row');row.append(el('div','q',e.label||e.question),el('div','a',pretty(e)),conf(e));
    if(showAll){row.append(el('span','by '+e.decided_by,BY[e.decided_by]||e.decided_by),el('div','meta',e.question),el('div','meta',e.ms!=null?Math.round(e.ms)+' ms':''))}
    else{row.append(el('span','pill o-'+(e.outcome||'info'),OUT[e.outcome]||'—'))}

@@ -8,13 +8,15 @@ Two files:
 
 | File | What goes in it |
 |---|---|
-| `added_questions.json` | the new yes/no question, its threshold (`yes_at`), the step it runs at (`safety` = every turn, `symptom` = Care Router), and what a "yes" means (`on_yes`: `danger_sign`, `self_harm`, `emergency_now`) |
+| `added_questions.json` | the new yes/no question, the step it runs at (`safety` = every turn, `symptom` = Care Router), and what a "yes" means (`on_yes`: `danger_sign`, `self_harm`, `emergency_now`) |
 | `regression_cases.jsonl` | the message that was missed, what must happen now, and a message that must **not** change |
 
+The yes threshold is not in this file: every question of a step uses that step's threshold in
+`floor/confidence.py` (`FLAG_YES` = 0.60 for safety questions, `CARE_FLAG_YES` = 0.50 for symptom questions).
 The floor loads the file at start-up. No other code changes. Then:
 
 ```bash
-python -m floor.regress --before bleeding   # without the question: shows the miss
+python -m floor.regress --before bleeding   # without the added question 'bleeding': shows the miss
 python -m floor.regress                     # with it: all cases pass
 RUN_DECIDER=1 python -m pytest tests/test_regression_decider.py   # keeps it fixed
 ```
@@ -29,7 +31,7 @@ it answered P(yes) = **0.19**. With no danger sign, the hard anal-itch rule allo
 
 ```json
 {"key": "bleeding", "step": "symptom", "question": "Does the user report any blood or bleeding?",
- "yes_at": 0.5, "on_yes": "danger_sign"}
+ "on_yes": "danger_sign"}
 ```
 
 plus three lines in `regression_cases.jsonl`: the blood message (must be `see_doctor`), a variant, and plain

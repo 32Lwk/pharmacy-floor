@@ -3,7 +3,7 @@
   "n": 40,
   "llm": "stub (no LLM call)",
   "floor": {
-   "agent_correct": "32/40",
+   "agent_correct": "34/40",
    "care_correct": "17/17",
    "under_triage": 0
   },
@@ -13,11 +13,11 @@
    "under_triage": 0
   },
   "turn_ms": {
-   "median": 4000.25,
-   "max": 5160.5
+   "median": 4432.65,
+   "max": 5573.2
   },
-  "decider_ms_per_turn_median": 3992.3,
-  "turns_with_hesitation": 5,
+  "decider_ms_per_turn_median": 4427.700000000001,
+  "turns_with_hesitation": 4,
   "pharmacist_handoffs": 2
  },
  "rows": [
@@ -31,8 +31,8 @@
    "kw_agent": "small_talk",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2892.6,
-   "total_ms": 2899.3
+   "decider_ms": 4394.6,
+   "total_ms": 4404.3
   },
   {
    "id": 2,
@@ -44,8 +44,8 @@
    "kw_agent": "small_talk",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2987.2,
-   "total_ms": 2997.3
+   "decider_ms": 4079.2,
+   "total_ms": 4090.4
   },
   {
    "id": 3,
@@ -57,8 +57,8 @@
    "kw_agent": "small_talk",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2759.6,
-   "total_ms": 2767.6
+   "decider_ms": 3515.8,
+   "total_ms": 3525.2
   },
   {
    "id": 4,
@@ -70,16 +70,16 @@
    "kw_agent": "small_talk",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2638.0,
-   "total_ms": 2646.5
+   "decider_ms": 3741.3,
+   "total_ms": 3753.7
   },
   {
    "id": 5,
    "text": "Where can I find hay fever tablets?",
    "agent": "store",
    "care": null,
-   "floor_agent": "symptoms",
-   "floor_care": "otc_ok",
+   "floor_agent": "pharmacist",
+   "floor_care": "see_doctor",
    "kw_agent": "store",
    "kw_care": null,
    "hesitations": [
@@ -87,28 +87,23 @@
      "mentions_symptom",
      "yes (safer)",
      "stub-safer-default"
-    ],
-    [
-     "agent",
-     "symptoms",
-     "stub-safer-default"
     ]
    ],
-   "decider_ms": 4465.5,
-   "total_ms": 4473.7
+   "decider_ms": 4460.8,
+   "total_ms": 4461.0
   },
   {
    "id": 6,
    "text": "What time do you close tonight?",
    "agent": "store",
    "care": null,
-   "floor_agent": "pharmacist",
-   "floor_care": "see_doctor",
+   "floor_agent": "store",
+   "floor_care": null,
    "kw_agent": "store",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2619.1,
-   "total_ms": 2619.2
+   "decider_ms": 4104.1,
+   "total_ms": 4112.6
   },
   {
    "id": 7,
@@ -120,8 +115,8 @@
    "kw_agent": "store",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3200.5,
-   "total_ms": 3208.8
+   "decider_ms": 3926.1,
+   "total_ms": 3935.3
   },
   {
    "id": 8,
@@ -133,21 +128,21 @@
    "kw_agent": "store",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3092.6,
-   "total_ms": 3099.8
+   "decider_ms": 3583.7,
+   "total_ms": 3590.9
   },
   {
    "id": 9,
    "text": "Which aisle has eye drops?",
    "agent": "store",
    "care": null,
-   "floor_agent": "medicine_question",
+   "floor_agent": "store",
    "floor_care": null,
    "kw_agent": "store",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3011.5,
-   "total_ms": 3019.3
+   "decider_ms": 3900.9,
+   "total_ms": 3909.2
   },
   {
    "id": 10,
@@ -159,8 +154,8 @@
    "kw_agent": "medicine_question",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3009.1,
-   "total_ms": 3016.1
+   "decider_ms": 3762.5,
+   "total_ms": 3771.0
   },
   {
    "id": 11,
@@ -172,8 +167,8 @@
    "kw_agent": "medicine_question",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2937.4,
-   "total_ms": 2946.0
+   "decider_ms": 3765.1,
+   "total_ms": 3773.8
   },
   {
    "id": 12,
@@ -191,8 +186,8 @@
      "stub-safer-default"
     ]
    ],
-   "decider_ms": 4347.8,
-   "total_ms": 4355.4
+   "decider_ms": 5058.2,
+   "total_ms": 5069.1
   },
   {
    "id": 13,
@@ -210,8 +205,8 @@
      "stub-safer-default"
     ]
    ],
-   "decider_ms": 5151.8,
-   "total_ms": 5160.5
+   "decider_ms": 5139.6,
+   "total_ms": 5148.7
   },
   {
    "id": 14,
@@ -223,8 +218,8 @@
    "kw_agent": "medicine_question",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 3952.5,
-   "total_ms": 3961.3
+   "decider_ms": 3719.4,
+   "total_ms": 3727.0
   },
   {
    "id": 15,
@@ -236,8 +231,8 @@
    "kw_agent": "feelings",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3730.1,
-   "total_ms": 3738.8
+   "decider_ms": 3599.1,
+   "total_ms": 3607.4
   },
   {
    "id": 16,
@@ -249,8 +244,8 @@
    "kw_agent": "feelings",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3964.3,
-   "total_ms": 3972.1
+   "decider_ms": 3518.0,
+   "total_ms": 3525.8
   },
   {
    "id": 17,
@@ -262,8 +257,8 @@
    "kw_agent": "feelings",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3161.0,
-   "total_ms": 3168.9
+   "decider_ms": 3651.8,
+   "total_ms": 3661.3
   },
   {
    "id": 18,
@@ -275,8 +270,8 @@
    "kw_agent": "feelings",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2983.2,
-   "total_ms": 2995.6
+   "decider_ms": 3781.9,
+   "total_ms": 3792.2
   },
   {
    "id": 19,
@@ -288,8 +283,8 @@
    "kw_agent": "symptoms",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 4449.1,
-   "total_ms": 4457.9
+   "decider_ms": 4894.6,
+   "total_ms": 4903.4
   },
   {
    "id": 20,
@@ -301,8 +296,8 @@
    "kw_agent": "symptoms",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 4134.2,
-   "total_ms": 4142.5
+   "decider_ms": 4848.6,
+   "total_ms": 4856.0
   },
   {
    "id": 21,
@@ -314,8 +309,8 @@
    "kw_agent": "symptoms",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 4184.4,
-   "total_ms": 4192.8
+   "decider_ms": 4788.4,
+   "total_ms": 4796.9
   },
   {
    "id": 22,
@@ -327,8 +322,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 4477.7,
-   "total_ms": 4486.5
+   "decider_ms": 5102.7,
+   "total_ms": 5110.1
   },
   {
    "id": 23,
@@ -340,8 +335,8 @@
    "kw_agent": "symptoms",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 4436.4,
-   "total_ms": 4443.6
+   "decider_ms": 4985.4,
+   "total_ms": 4993.8
   },
   {
    "id": 24,
@@ -353,8 +348,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 4735.0,
-   "total_ms": 4743.7
+   "decider_ms": 4869.5,
+   "total_ms": 4877.4
   },
   {
    "id": 25,
@@ -366,8 +361,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 4644.3,
-   "total_ms": 4656.9
+   "decider_ms": 4874.9,
+   "total_ms": 4882.4
   },
   {
    "id": 26,
@@ -379,8 +374,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 4421.3,
-   "total_ms": 4429.1
+   "decider_ms": 5003.6,
+   "total_ms": 5014.5
   },
   {
    "id": 27,
@@ -392,8 +387,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 4251.7,
-   "total_ms": 4259.8
+   "decider_ms": 4877.4,
+   "total_ms": 4889.4
   },
   {
    "id": 28,
@@ -405,8 +400,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 4101.3,
-   "total_ms": 4109.2
+   "decider_ms": 5044.0,
+   "total_ms": 5054.0
   },
   {
    "id": 29,
@@ -417,15 +412,9 @@
    "floor_care": "see_doctor",
    "kw_agent": "medicine_question",
    "kw_care": "see_doctor",
-   "hesitations": [
-    [
-     "agent",
-     "symptoms",
-     "stub-safer-default"
-    ]
-   ],
-   "decider_ms": 4047.2,
-   "total_ms": 4054.7
+   "hesitations": [],
+   "decider_ms": 5406.4,
+   "total_ms": 5414.9
   },
   {
    "id": 30,
@@ -437,8 +426,8 @@
    "kw_agent": "medicine_question",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 4172.9,
-   "total_ms": 4180.7
+   "decider_ms": 5564.3,
+   "total_ms": 5573.2
   },
   {
    "id": 31,
@@ -450,8 +439,8 @@
    "kw_agent": "medicine_question",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 4144.1,
-   "total_ms": 4153.3
+   "decider_ms": 4996.4,
+   "total_ms": 5004.5
   },
   {
    "id": 32,
@@ -463,8 +452,8 @@
    "kw_agent": "medicine_question",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 4020.3,
-   "total_ms": 4028.4
+   "decider_ms": 4518.6,
+   "total_ms": 4526.7
   },
   {
    "id": 33,
@@ -476,8 +465,8 @@
    "kw_agent": "feelings",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 4098.9,
-   "total_ms": 4105.8
+   "decider_ms": 4728.6,
+   "total_ms": 4737.1
   },
   {
    "id": 34,
@@ -489,8 +478,8 @@
    "kw_agent": "feelings",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 4433.7,
-   "total_ms": 4440.6
+   "decider_ms": 4649.8,
+   "total_ms": 4659.6
   },
   {
    "id": 35,
@@ -502,8 +491,8 @@
    "kw_agent": "feelings",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 4272.0,
-   "total_ms": 4279.6
+   "decider_ms": 4779.3,
+   "total_ms": 4789.3
   },
   {
    "id": 36,
@@ -515,8 +504,8 @@
    "kw_agent": "emergency",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 1991.2,
-   "total_ms": 1991.3
+   "decider_ms": 3038.6,
+   "total_ms": 3038.7
   },
   {
    "id": 37,
@@ -528,8 +517,8 @@
    "kw_agent": "emergency",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 1966.6,
-   "total_ms": 1966.8
+   "decider_ms": 3105.9,
+   "total_ms": 3106.0
   },
   {
    "id": 38,
@@ -547,8 +536,8 @@
      "python-rule"
     ]
    ],
-   "decider_ms": 1938.9,
-   "total_ms": 1939.0
+   "decider_ms": 3226.4,
+   "total_ms": 3226.5
   },
   {
    "id": 39,

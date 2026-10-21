@@ -26,7 +26,7 @@ RECEPTION_PROMPT = ("You are the reception desk of a drugstore floor. You never 
 CRISIS_WORDS = re.compile(r"kill myself|end(ing)? (it|my life)|don'?t want to (live|wake up)|so i (don'?t|won'?t) wake up|"
                           r"whole (box|bottle|pack)|overdose|suicid", re.I)
 LABELS = {
-    "agent": "Who should answer?", "topic_check": "Second look: what is the user asking for?",
+    "agent": "Who should answer?", "shop_question": "Asking about the shop itself?", "topic_check": "Second look: what is the user asking for?",
     "emergency_now": "Emergency sign?", "self_harm": "Self-harm risk?", "special_population": "Child, pregnant or very old?",
     "manipulation": "Trying to change the rules?", "mentions_symptom": "Mentions a body problem?",
     "route": "Medicine here, or see a doctor?", "genital_area": "Genital area?", "anal_area": "Anal area?",
@@ -115,7 +115,7 @@ class PharmacyFloor:
                 return
         # offline / unparseable: one step safer
         if key == "agent":
-            if td.flags.get("mentions_symptom", 0) >= 0.3:
+            if td.flags.get("mentions_symptom", 0) >= C.SYMPTOM_LEAN:
                 td.agent = "symptoms"
             log.add("second_look", key, td.agent, td.agent_confidence, "stub-safer-default",
                     label="Unsure who should answer: safer default", outcome=C.SAFER)
@@ -145,10 +145,19 @@ class PharmacyFloor:
         ab = C.band(td.agent_confidence, C.AGENT_PROCEED, C.AGENT_HANDOFF)
         log.add("who", "agent", td.agent, td.agent_confidence, "decider-2b", td.ms, label=L("agent"),
                 outcome={"proceed": C.PROCEED, "middle": C.SECOND_LOOK, "handoff": C.HANDOFF}[ab])
+        ps = td.flags.pop("shop_question", None)
+        if ps is not None:  # routing hint: a clear shop question settles an unsure pick (no body problem mentioned)
+            settle = ab != "proceed" and ps >= C.FLAG_YES and not td.yes("mentions_symptom")
+            log.add("who", "shop_question", f"{C.flag_band(ps)} (P={ps:.2f})", ps, "decider-2b", label=L("shop_question"),
+                    outcome=C.PROCEED if not settle else C.SECOND_LOOK)
+            if settle:
+                td.agent, ab = "store", "proceed"
+                log.add("who", "shop_rule", "store helper", None, "python-rule",
+                        label="Unsure pick + clear shop question: store helper", outcome=C.PROCEED)
 
         # Step 2 - safety checks, every turn
         for k, p in list(td.flags.items()):
-            fb = C.flag_band(p) if k not in self.added else ("yes" if p >= self.added[k]["yes_at"] else "no")
+            fb = C.flag_band(p)
             stop_like = k in ("emergency_now", "self_harm") or k in self.added
             out = {"yes": C.STOP if stop_like else C.SAFER, "unsure": C.SECOND_LOOK, "no": C.PROCEED}[fb]
             log.add("safety", k, f"{fb} (P={p:.2f})", p, "decider-2b", label=L(k), outcome=out)
@@ -156,7 +165,7 @@ class PharmacyFloor:
             if k != "agent":
                 self._judge(k, text, log, td)
         for k, a in self.added.items():  # an added question maps onto an existing safety outcome
-            if td.flags.get(k, 0.0) >= a["yes_at"] and not td.yes(a["on_yes"]):
+            if td.yes(k) and not td.yes(a["on_yes"]):
                 td.flags[a["on_yes"]] = 1.0
                 log.add("safety", "added_question", f"{k} -> {a['on_yes']}", None, "python-rule",
                         label=f"Added question '{k}' says yes: treat as {a['on_yes']}", outcome=C.STOP)
@@ -172,14 +181,16 @@ class PharmacyFloor:
             log.add("safety", "manipulation_rule", "small_talk (no rule changes)", None, "python-rule",
                     label="Rule change attempt: small talk only", outcome=C.SAFER)
 
-        # Step 3 - before the helper (tool) runs: a second, independent Decider look at the request.
-        # Agree -> proceed (even a low-confidence pick is confirmed). Disagree -> Bedrock tie-break,
-        # or the pharmacist when the first pick was already below AGENT_HANDOFF.
-        ans, ms = ask(self.engine, text, TOOL_CHECK)
-        chk = ans["topic_check"]
-        agree = chk.choice == agent
-        log.add("before_tool", "topic_check", chk.choice + (" (agrees)" if agree else f" (differs from {agent})"),
-                chk.confidence, "decider-2b", ms, label=L("topic_check"), outcome=C.PROCEED if agree else C.SECOND_LOOK)
+        # Step 3 - before the helper (tool) runs. Pick >= AGENT_PROCEED: go on, no extra call.
+        # Below: a second, independent Decider look. Agree -> go on. Disagree -> Bedrock tie-break,
+        # or the pharmacist when the pick was below AGENT_HANDOFF.
+        agree = True
+        if ab != "proceed":
+            ans, ms = ask(self.engine, text, TOOL_CHECK)
+            chk = ans["topic_check"]
+            agree = chk.choice == agent
+            log.add("before_tool", "topic_check", chk.choice + (" (agrees)" if agree else f" (differs from {agent})"),
+                    chk.confidence, "decider-2b", ms, label=L("topic_check"), outcome=C.PROCEED if agree else C.SECOND_LOOK)
         if not agree and agent != "small_talk":
             if ab == "handoff":
                 return self._handoff(log, f"unsure who should answer ({td.agent_confidence:.2f}, second look disagreed)", t_start)
@@ -200,8 +211,9 @@ class PharmacyFloor:
                     label=L("route"), outcome=C.PROCEED if rb == "proceed" or rule_decided else
                     (C.SAFER if rb == "middle" else C.HANDOFF))
             for k, p in care.flags.items():
-                log.add("symptom", k, f"{C.flag_band(p)} (P={p:.2f})", p, "decider-2b", label=L(k),
-                        outcome=C.SAFER if p >= 0.5 else C.PROCEED)
+                yes_at = C.CARE_FLAG_YES_GENITAL if k == "genital_area" else C.CARE_FLAG_YES
+                log.add("symptom", k, f"{'yes' if p >= yes_at else 'no'} (P={p:.2f})", p, "decider-2b", label=L(k),
+                        outcome=C.SAFER if p >= yes_at else C.PROCEED)
             for r in care.reasons:
                 log.add("symptom", "care_rule", r, None, "python-rule", label=L("care_rule"),
                         outcome=C.SAFER if ("see_doctor" in r or "->" in r or "doctor" in r) else C.PROCEED)
@@ -246,7 +258,7 @@ class PharmacyFloor:
             ans, ms = ask(self.engine, f"User message: {text}\nReply: {reply}", REPLY_CHECK)
             pt = ans["on_topic"].noul
             ob = C.band(pt, C.REPLY_ON_TOPIC_PROCEED, C.REPLY_ON_TOPIC_HANDOFF)
-            log.add("before_reply", "on_topic", f"{'yes' if pt >= 0.5 else 'no'} (P={pt:.2f})", pt, "decider-2b", ms,
+            log.add("before_reply", "on_topic", f"{C.flag_band(pt, C.REPLY_ON_TOPIC_PROCEED, C.REPLY_ON_TOPIC_HANDOFF)} (P={pt:.2f})", pt, "decider-2b", ms,
                     label=L("on_topic"), outcome={"proceed": C.PROCEED, "middle": C.SAFER, "handoff": C.HANDOFF}[ob])
             if ob == "handoff":
                 return self._handoff(log, f"reply did not match the question (P={pt:.2f})", t_start, care)

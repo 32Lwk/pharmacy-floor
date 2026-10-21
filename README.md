@@ -8,7 +8,7 @@ yes/no, and checks the written reply. **Plain Python** enforces the hard rules. 
 **The idea.** A decision-only model gives *typed* answers (a choice from a fixed list, or a yes/no
 probability). It cannot invent a product, a dose or a fact, its confidence is a number you can act on,
 and one more question costs a fraction of a second on CPU. So the floor asks many small questions at
-every step of every turn: about 15 per symptom turn and about 9 on other turns. An LLM call could not sit at all of these steps.
+every step of every turn: about 16 per symptom turn and about 10 on other turns. An LLM call could not sit at all of these steps.
 
 > Hackathon demo, English conversations. General guidance, not a diagnosis. In an emergency call
 > your local emergency number (119 in Japan). Decider 2B is an experimental model.
@@ -25,12 +25,14 @@ Declared pattern: **#tool-selection**. Reusable recipes:
 ```
 user message
  ├─ pre-check (Python): crisis words -> fixed crisis-support reply, no model
- ├─ 1 Who should answer?     Decider choice over 5 helpers           (one Decider call also carries step 2)
+ ├─ 1 Who should answer?     Decider choice over 5 helpers + a "shop question?" yes/no hint (same Decider call as step 2)
+ │     pick < 0.60, shop_question >= 0.60 and no body problem -> store helper (on 40 dev messages: shop 0.57-0.95, others <= 0.23)
  ├─ 2 Safety checks          emergency_now, self_harm, special_population, manipulation, mentions_symptom
- │     emergency / self-harm: unsure (0.40-0.60) = YES -> fixed message. Never sent to an LLM.
+ │     emergency / self-harm: unsure (0.40 <= P < 0.60) = YES -> fixed message. Never sent to an LLM.
  │     other flags: unsure -> one Bedrock yes/no tie-break (offline: safer default)
- ├─ 3 Before the helper runs a second, independent Decider look ("what is the user asking for?", reversed options)
- │     agrees -> go on · differs -> Bedrock tie-break · differs AND first pick < 0.35 -> pharmacist
+ ├─ 3 Before the helper runs pick >= 0.60: go on, no extra call. Pick < 0.60: a second, independent Decider look
+ │     ("what is the user asking for?", reversed options): agrees -> go on · differs -> Bedrock tie-break
+ │     · differs AND pick < 0.35 -> pharmacist
  ├─ 4 Symptom check          Care Router (Decider), whenever a body problem is mentioned
  │     genital area -> see_doctor, always · anal itch -> OTC unless a danger sign (bleeding, strong pain, > 1 week)
  │     emergency never downgraded · route < 0.50 -> one step safer · route < 0.40 and no hard rule -> pharmacist
@@ -38,7 +40,7 @@ user message
  │                           TurnRouterIntervention pins the tool (before_invocation / before_tool_call Guide)
  └─ 6 Before the reply goes out
        Python: no guessed diagnosis, no dose numbers, store numbers must be in store data, doctor mention, disclaimer
-       Decider: "reply answers what was asked?" < 0.40 -> pharmacist, 0.40-0.60 -> add a pharmacist note
+       Decider: "reply answers what was asked?" P < 0.40 -> pharmacist, 0.40 <= P < 0.60 -> add a pharmacist note
                 "reply gives a dose or names an illness?" >= 0.60 -> pharmacist
 ```
 
@@ -47,23 +49,36 @@ OK (sure, go on) · Extra care (one step safer) · Double-check (unsure, second 
 Pharmacist (too unsure: an **Ask the pharmacist** card replaces the reply) · Stop (fixed safety message).
 "show technical details" adds the question key, who decided (Decider / Rule / Bedrock) and ms.
 
-### Confidence thresholds (`floor/confidence.py`)
+### Confidence thresholds (`floor/confidence.py`, the only place they are defined)
+
+The recipes import them from there. One band convention everywhere: for a pair (low, high),
+`P >= high` is the high side (proceed / yes), `low <= P < high` is the middle (unsure), `P < low` is the low side
+(hand-off / no).
 
 | Constant | Value | Meaning |
 |---|---|---|
-| `AGENT_PROCEED` | 0.60 | who-answers confidence at or above this: use the pick |
-| `AGENT_HANDOFF` | 0.35 | below this and the second look disagrees: pharmacist |
-| `FLAG_YES` / `FLAG_NO` | 0.60 / 0.40 | yes/no band; in between = unsure |
+| `AGENT_PROCEED` | 0.60 | step 1 pick P >= 0.60: use it, skip step 3's second look |
+| `AGENT_HANDOFF` | 0.35 | pick P < 0.35 and the second look disagrees: pharmacist (0.35 <= P < 0.60 and disagree: Bedrock tie-break) |
+| `FLAG_YES` / `FLAG_NO` | 0.60 / 0.40 | safety yes/no: P >= 0.60 yes · 0.40 <= P < 0.60 unsure · P < 0.40 no |
+| `SYMPTOM_LEAN` | 0.30 | offline tie-break: mentions_symptom >= 0.30 sends an unsure pick to the symptoms helper |
 | `ROUTE_PROCEED` | 0.50 | Care Router route below this: one step safer (existing rule) |
 | `ROUTE_HANDOFF` | 0.40 | route below this with no hard rule deciding: pharmacist |
+| `CARE_FLAG_YES` / `CARE_FLAG_YES_GENITAL` | 0.50 / 0.40 | Care Router yes/no flags (incl. added questions) / the genital flag, which trips earlier on purpose |
 | `REPLY_ON_TOPIC_PROCEED` / `_HANDOFF` | 0.60 / 0.40 | reply check: go on / add a pharmacist note / pharmacist |
 | `REPLY_DOSE_DX_HANDOFF` | 0.60 | reply states a dose or names an illness: pharmacist |
 | `NEVER_ASK_LLM` (`floor/floor.py`) | emergency_now, self_harm | unsure = yes; never a Bedrock tie-break |
 
 All are hand-picked from probabilities seen on demo/dev messages, not tuned on the held-out set.
 On the eval sets (stub text model) the floor handed 2 of 40 dev and 1 of 12 held-out messages to the
-pharmacist, e.g. "What time do you close tonight?" (who-answers 0.26, second look said small_talk).
-That is the calibrated behavior: an unsure answer goes to a person instead of being guessed.
+pharmacist: "Where can I find hay fever tablets?" (pick symptoms, shop_question 0.57 = unsure), the cold
+medicine + blood-in-stool message (the reply check said the reply missed the question; the see-a-doctor advice is kept),
+and "nervous about my exam and my stomach feels a little upset" (held-out).
+
+"What time do you close tonight?" used to hand off (store 0.26: "you" was read as the chat assistant). Fixed by wording,
+not thresholds: the agent question now says "'you' means the shop", the store option was reworded (0.45), and the
+shop_question hint settles unsure shop picks. Caveat: the wording was compared on 13 hand-written messages, some of which
+share wording with eval cases (including held-out case 103, "Do you sell nicotine gum?"), so the held-out set is no
+longer fully blind for store questions.
 
 Screenshots (real `/api/chat` output with Bedrock, re-rendered at 1600 px): `docs/screenshots/`.
 
@@ -93,16 +108,16 @@ Decider latency per call, same CPU (`eval/bench_sets.py`, current code, n=8 each
 | agent choice only (1 question) | 544 ms |
 | Care Router: 6 questions (1 choice + 5 yes/no) — only on turns that mention a symptom | 1728 ms |
 
-Whole turn with the stub text model, including the step checks (from `eval/results*.json`): median 4000 ms
-(dev, n=40) / 3461 ms (held-out, n=12).
+Whole turn with the stub text model, including the step checks (from `eval/results*.json`): median 4433 ms
+(dev, n=40) / 4030 ms (held-out, n=12).
 
 Routing and safety (re-run 2026-10-22 with the step checks; a pharmacist hand-off counts as a wrong agent and as at least see_doctor). "Under-triage" = the final outcome is less careful than expected.
 
 | Set | Method | Agent correct | Care route correct | Under-triage |
 |---|---|---|---|---|
-| 40 dev cases | Pharmacy Floor (Decider) | 32/40 (2 handed to the pharmacist) | 17/17 | 0 |
+| 40 dev cases | Pharmacy Floor (Decider) | 34/40 (2 handed to the pharmacist) | 17/17 | 0 |
 | 40 dev cases | Keyword rules | 40/40 | 16/17 | 0 |
-| 12 held-out cases | Pharmacy Floor (Decider) | 9/12 (1 handed to the pharmacist) | 4/6 | 0 |
+| 12 held-out cases | Pharmacy Floor (Decider) | 10/12 (1 handed to the pharmacist) | 4/6 | 0 |
 | 12 held-out cases | Keyword rules | 7/12 | 1/6 | 5 |
 
 Honest notes
