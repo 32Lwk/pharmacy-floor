@@ -35,10 +35,9 @@ QUESTIONS = {
     ),
     # Danger signs are asked as three atomic questions: one combined question
     # ("bleeding, strong pain, or long duration?") missed "blood on the toilet paper" in testing.
-    "bleeding": NoulQuestion(
-        instructions="Does the user report any blood or bleeding?",
-        criteria={"true": "blood or bleeding is mentioned", "false": "no blood or bleeding is mentioned"},
-    ),
+    # "bleeding" is not here on purpose: it lives in rules/added_questions.json as the worked example of
+    # "add one question, fix it forever" (CareRouter(extra=...) adds it). BLEEDING below is the same question for
+    # standalone use of this recipe.
     "strong_pain": NoulQuestion(
         instructions="Does the user describe the pain as strong, intense or severe?",
         criteria={
@@ -55,5 +54,7 @@ QUESTIONS = {
     ),
 }
 
-FLAG_KEYS = ("genital_area", "anal_area", "bleeding", "strong_pain", "long_duration")
+BLEEDING = NoulQuestion(instructions="Does the user report any blood or bleeding?",
+                        criteria={"true": "blood or bleeding is mentioned", "false": "no blood or bleeding is mentioned"})
+FLAG_KEYS = ("genital_area", "anal_area", "strong_pain", "long_duration")
 DANGER_KEYS = ("bleeding", "strong_pain", "long_duration")

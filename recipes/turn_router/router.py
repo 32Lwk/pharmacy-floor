@@ -4,7 +4,7 @@ from __future__ import annotations
 import time
 from dataclasses import dataclass, field
 
-from .questions import AGENTS, build_questions
+from .questions import AGENTS, build_questions, load_added
 
 # Hand-picked, not tuned on the eval set.
 AGENT_CONFIDENCE_FLOOR = 0.5           # below -> hesitant about the agent choice
@@ -26,9 +26,10 @@ class TurnDecision:
 
 
 class TurnRouter:
-    def __init__(self, engine, *, full: bool = False):
+    def __init__(self, engine, *, full: bool = False, added: dict | None = None):
         self.engine = engine
-        self.questions = build_questions(full)
+        self.added = load_added() if added is None else added
+        self.questions = build_questions(full, self.added)
 
     def decide(self, text: str) -> TurnDecision:
         t0 = time.perf_counter()

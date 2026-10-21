@@ -12,6 +12,8 @@ class Entry:
     confidence: float | None
     decided_by: str    # "decider-2b" | "bedrock" | "python-rule" | "stub-safer-default"
     ms: float | None = None
+    label: str | None = None     # plain-English question shown in the panel
+    outcome: str | None = None   # proceed | safer | second_look | handoff | stop | info
 
 
 @dataclass
@@ -21,6 +23,7 @@ class TurnLog:
     final_agent: str = ""
     reply: str = ""
     total_ms: float = 0.0
+    handoff: str | None = None   # why the turn was handed to the pharmacist, if it was
 
     def add(self, *a, **k):
         self.entries.append(Entry(*a, **k))

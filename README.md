@@ -1,9 +1,14 @@
-# Pharmacy Floor — a multi-agent drugstore helper where Strands Decider 2B makes every decision
+# Pharmacy Floor — a drugstore helper where Strands Decider 2B makes every decision
 
 A reception agent and five specialist agents (symptoms, medicine questions, feelings, store,
-small talk), plus emergency handling. **Strands Decider 2B** decides who answers and every
-safety yes/no. **Plain Python** enforces the hard rules. **Amazon Bedrock** (Amazon Nova Lite)
-writes the text. Unsure Decider answers (the "hesitation band") are handed to Bedrock.
+small talk), plus emergency handling. **Strands Decider 2B** decides who answers, every safety
+yes/no, and checks the written reply. **Plain Python** enforces the hard rules. **Amazon Bedrock**
+(Amazon Nova Lite) only writes the text.
+
+**The idea.** A decision-only model gives *typed* answers (a choice from a fixed list, or a yes/no
+probability). It cannot invent a product, a dose or a fact, its confidence is a number you can act on,
+and one more question costs a fraction of a second on CPU. So the floor asks many small questions at
+every step of every turn: about 15 per symptom turn and about 9 on other turns. An LLM call could not sit at all of these steps.
 
 > Hackathon demo, English conversations. General guidance, not a diagnosis. In an emergency call
 > your local emergency number (119 in Japan). Decider 2B is an experimental model.
@@ -11,34 +16,56 @@ writes the text. Unsure Decider answers (the "hesitation band") are handed to Be
 Declared pattern: **#tool-selection**. Reusable recipes:
 - [`recipes/turn_router/`](recipes/turn_router/README.md) — Decider as the tool selector of a reception agent
 - [`recipes/care_router/`](recipes/care_router/README.md) — three-door triage with hard-rule overrides (#policy-style safety layer)
+- [`rules/`](rules/README.md) — **add one question, fix it forever** (worked example: the bleeding question)
 
-## One turn
+![Decision panel](docs/screenshots/01_blood_see_doctor_steps.png)
+
+## One turn: typed decisions at every step
 
 ```
 user message
- ├─ pre-gate (Python): crisis words -> fixed crisis reply, no model
- ├─ Turn Router — ONE Decider call, 6 questions:
- │     agent (choice: symptoms / medicine_question / feelings / store / small_talk)
- │     emergency_now, self_harm, special_population, manipulation, mentions_symptom (yes/no)
- ├─ hesitation band: agent conf < 0.5, or a yes/no with 0.4 <= P < 0.6
- │     -> Bedrock classifies that one question (offline: safer default)
- ├─ safety layer (every turn, whatever the specialist):
- │     emergency_now / self_harm -> fixed emergency text, no LLM
- │     symptom mentioned anywhere -> Care Router (second Decider call):
- │        genital area -> see_doctor, always · anal itch / hemorrhoids -> OTC unless bleeding,
- │        strong pain, > 1 week · emergency never downgraded · low confidence -> one step safer
- │        special population + otc_ok -> see_doctor
- ├─ reception Agent(tools=[5 specialist agents-as-tools], interventions=[TurnRouterIntervention])
- │     default (FLOOR_RECEPTION=direct): the Decider-chosen tool is invoked directly
- │       (reception.tool.<name>) - no LLM call is spent on tool selection; before_tool_call still runs
- │     FLOOR_RECEPTION=llm: before_invocation pins "[ROUTE: call tool X]"; the reception LLM calls a
- │       tool; before_tool_call Guides any other tool back to X (both paths tested in tests/test_guide.py)
- │     symptoms tool runs its own Agent with CareRouterIntervention; other tools get the care note
- └─ final gate (Python): no OTC wording on see_doctor turns, doctor mention required,
-       disclaimer on symptom turns
+ ├─ pre-check (Python): crisis words -> fixed crisis-support reply, no model
+ ├─ 1 Who should answer?     Decider choice over 5 helpers           (one Decider call also carries step 2)
+ ├─ 2 Safety checks          emergency_now, self_harm, special_population, manipulation, mentions_symptom
+ │     emergency / self-harm: unsure (0.40-0.60) = YES -> fixed message. Never sent to an LLM.
+ │     other flags: unsure -> one Bedrock yes/no tie-break (offline: safer default)
+ ├─ 3 Before the helper runs a second, independent Decider look ("what is the user asking for?", reversed options)
+ │     agrees -> go on · differs -> Bedrock tie-break · differs AND first pick < 0.35 -> pharmacist
+ ├─ 4 Symptom check          Care Router (Decider), whenever a body problem is mentioned
+ │     genital area -> see_doctor, always · anal itch -> OTC unless a danger sign (bleeding, strong pain, > 1 week)
+ │     emergency never downgraded · route < 0.50 -> one step safer · route < 0.40 and no hard rule -> pharmacist
+ ├─ 5 Writing the reply      the Decider-chosen Strands tool (agents-as-tools) writes with Nova Lite;
+ │                           TurnRouterIntervention pins the tool (before_invocation / before_tool_call Guide)
+ └─ 6 Before the reply goes out
+       Python: no guessed diagnosis, no dose numbers, store numbers must be in store data, doctor mention, disclaimer
+       Decider: "reply answers what was asked?" < 0.40 -> pharmacist, 0.40-0.60 -> add a pharmacist note
+                "reply gives a dose or names an illness?" >= 0.60 -> pharmacist
 ```
 
-Every step is logged (question, answer, confidence, who decided, ms) and shown in the demo UI.
+The panel shows every step, grouped and in plain English, colored by what happened:
+OK (sure, go on) · Extra care (one step safer) · Double-check (unsure, second look) ·
+Pharmacist (too unsure: an **Ask the pharmacist** card replaces the reply) · Stop (fixed safety message).
+"show technical details" adds the question key, who decided (Decider / Rule / Bedrock) and ms.
+
+### Confidence thresholds (`floor/confidence.py`)
+
+| Constant | Value | Meaning |
+|---|---|---|
+| `AGENT_PROCEED` | 0.60 | who-answers confidence at or above this: use the pick |
+| `AGENT_HANDOFF` | 0.35 | below this and the second look disagrees: pharmacist |
+| `FLAG_YES` / `FLAG_NO` | 0.60 / 0.40 | yes/no band; in between = unsure |
+| `ROUTE_PROCEED` | 0.50 | Care Router route below this: one step safer (existing rule) |
+| `ROUTE_HANDOFF` | 0.40 | route below this with no hard rule deciding: pharmacist |
+| `REPLY_ON_TOPIC_PROCEED` / `_HANDOFF` | 0.60 / 0.40 | reply check: go on / add a pharmacist note / pharmacist |
+| `REPLY_DOSE_DX_HANDOFF` | 0.60 | reply states a dose or names an illness: pharmacist |
+| `NEVER_ASK_LLM` (`floor/floor.py`) | emergency_now, self_harm | unsure = yes; never a Bedrock tie-break |
+
+All are hand-picked from probabilities seen on demo/dev messages, not tuned on the held-out set.
+On the eval sets (stub text model) the floor handed 2 of 40 dev and 1 of 12 held-out messages to the
+pharmacist, e.g. "What time do you close tonight?" (who-answers 0.26, second look said small_talk).
+That is the calibrated behavior: an unsure answer goes to a person instead of being guessed.
+
+Screenshots (real `/api/chat` output with Bedrock, re-rendered at 1600 px): `docs/screenshots/`.
 
 ## Run
 
@@ -66,16 +93,16 @@ Decider latency per call, same CPU (`eval/bench_sets.py`, current code, n=8 each
 | agent choice only (1 question) | 544 ms |
 | Care Router: 6 questions (1 choice + 5 yes/no) — only on turns that mention a symptom | 1728 ms |
 
-Whole turn with the stub text model (from `eval/results*.json`): turns with a symptom median 6291 ms
-(n=21, dev) / 5801 ms (n=6, held-out); turns without a symptom 3835 ms (n=17) / 3537 ms (n=6).
+Whole turn with the stub text model, including the step checks (from `eval/results*.json`): median 4000 ms
+(dev, n=40) / 3461 ms (held-out, n=12).
 
-Routing and safety. "Under-triage" = the final outcome is less careful than expected.
+Routing and safety (re-run 2026-10-22 with the step checks; a pharmacist hand-off counts as a wrong agent and as at least see_doctor). "Under-triage" = the final outcome is less careful than expected.
 
 | Set | Method | Agent correct | Care route correct | Under-triage |
 |---|---|---|---|---|
-| 40 dev cases | Pharmacy Floor (Decider) | 33/40 | 17/17 | 0 |
+| 40 dev cases | Pharmacy Floor (Decider) | 32/40 (2 handed to the pharmacist) | 17/17 | 0 |
 | 40 dev cases | Keyword rules | 40/40 | 16/17 | 0 |
-| 12 held-out cases | Pharmacy Floor (Decider) | 9/12 | 4/6 | 0 |
+| 12 held-out cases | Pharmacy Floor (Decider) | 9/12 (1 handed to the pharmacist) | 4/6 | 0 |
 | 12 held-out cases | Keyword rules | 7/12 | 1/6 | 5 |
 
 Honest notes

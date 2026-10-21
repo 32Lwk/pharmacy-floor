@@ -14,12 +14,14 @@ floor.handle("hello")  # warm-up
 rows = []
 for c in cases:
     log = floor.handle(c["text"])
-    care = next((e.answer for e in reversed(log.entries) if e.step == "care_router" and e.question == "route"), None)
-    if any(e.step == "policy" and e.question == "special_population" for e in log.entries):
+    care = next((e.answer.split()[0] for e in reversed(log.entries) if e.step == "symptom" and e.question == "route"), None)
+    if any(e.question == "special_population" and e.decided_by == "python-rule" for e in log.entries):
+        care = "see_doctor"
+    if log.final_agent == "pharmacist":  # handed to a human: counts as at least see_doctor, never as an emergency
         care = "see_doctor"
     ka, kc = keyword_decide(c["text"])
     rows.append({**c, "floor_agent": log.final_agent, "floor_care": care, "kw_agent": ka, "kw_care": kc,
-                 "hesitations": [(e.question, e.answer, e.decided_by) for e in log.entries if e.step == "hesitation"],
+                 "hesitations": [(e.question, e.answer, e.decided_by) for e in log.entries if e.step == "second_look"],
                  "decider_ms": round(sum(e.ms or 0 for e in log.entries if e.decided_by == "decider-2b"), 1),
                  "total_ms": round(log.total_ms, 1)})
     print(c["id"], c["agent"], "->", log.final_agent, care, "| kw:", ka, kc, f'{log.total_ms:.0f}ms', flush=True)
@@ -40,6 +42,7 @@ def score(prefix):
 summary = {"n": len(rows), "llm": floor.llm_label(), "floor": score("floor"), "keyword_rules": score("kw"),
            "turn_ms": {"median": statistics.median(r["total_ms"] for r in rows), "max": max(r["total_ms"] for r in rows)},
            "decider_ms_per_turn_median": statistics.median(r["decider_ms"] for r in rows),
-           "turns_with_hesitation": sum(bool(r["hesitations"]) for r in rows)}
+           "turns_with_hesitation": sum(bool(r["hesitations"]) for r in rows),
+           "pharmacist_handoffs": sum(r["floor_agent"] == "pharmacist" for r in rows)}
 json.dump({"summary": summary, "rows": rows}, open(ROOT / CASEFILE.replace("cases", "results").replace(".jsonl", ".json"), "w"), indent=1)
 print(json.dumps(summary, indent=1))

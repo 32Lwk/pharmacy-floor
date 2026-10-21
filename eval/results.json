@@ -3,7 +3,7 @@
   "n": 40,
   "llm": "stub (no LLM call)",
   "floor": {
-   "agent_correct": "33/40",
+   "agent_correct": "32/40",
    "care_correct": "17/17",
    "under_triage": 0
   },
@@ -13,11 +13,12 @@
    "under_triage": 0
   },
   "turn_ms": {
-   "median": 3238.05,
-   "max": 4703.5
+   "median": 4000.25,
+   "max": 5160.5
   },
-  "decider_ms_per_turn_median": 3228.8999999999996,
-  "turns_with_hesitation": 7
+  "decider_ms_per_turn_median": 3992.3,
+  "turns_with_hesitation": 5,
+  "pharmacist_handoffs": 2
  },
  "rows": [
   {
@@ -30,8 +31,8 @@
    "kw_agent": "small_talk",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2544.9,
-   "total_ms": 2554.8
+   "decider_ms": 2892.6,
+   "total_ms": 2899.3
   },
   {
    "id": 2,
@@ -43,8 +44,8 @@
    "kw_agent": "small_talk",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2412.4,
-   "total_ms": 2423.4
+   "decider_ms": 2987.2,
+   "total_ms": 2997.3
   },
   {
    "id": 3,
@@ -56,8 +57,8 @@
    "kw_agent": "small_talk",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2341.2,
-   "total_ms": 2349.7
+   "decider_ms": 2759.6,
+   "total_ms": 2767.6
   },
   {
    "id": 4,
@@ -69,8 +70,8 @@
    "kw_agent": "small_talk",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2353.8,
-   "total_ms": 2362.6
+   "decider_ms": 2638.0,
+   "total_ms": 2646.5
   },
   {
    "id": 5,
@@ -83,37 +84,31 @@
    "kw_care": null,
    "hesitations": [
     [
-     "agent",
-     "symptoms",
-     "stub-safer-default"
-    ],
-    [
      "mentions_symptom",
      "yes (safer)",
      "stub-safer-default"
+    ],
+    [
+     "agent",
+     "symptoms",
+     "stub-safer-default"
     ]
    ],
-   "decider_ms": 4059.9,
-   "total_ms": 4068.2
+   "decider_ms": 4465.5,
+   "total_ms": 4473.7
   },
   {
    "id": 6,
    "text": "What time do you close tonight?",
    "agent": "store",
    "care": null,
-   "floor_agent": "store",
-   "floor_care": null,
+   "floor_agent": "pharmacist",
+   "floor_care": "see_doctor",
    "kw_agent": "store",
    "kw_care": null,
-   "hesitations": [
-    [
-     "agent",
-     "store",
-     "stub-safer-default"
-    ]
-   ],
-   "decider_ms": 2424.8,
-   "total_ms": 2434.3
+   "hesitations": [],
+   "decider_ms": 2619.1,
+   "total_ms": 2619.2
   },
   {
    "id": 7,
@@ -125,8 +120,8 @@
    "kw_agent": "store",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2381.2,
-   "total_ms": 2389.4
+   "decider_ms": 3200.5,
+   "total_ms": 3208.8
   },
   {
    "id": 8,
@@ -138,8 +133,8 @@
    "kw_agent": "store",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2782.1,
-   "total_ms": 2791.5
+   "decider_ms": 3092.6,
+   "total_ms": 3099.8
   },
   {
    "id": 9,
@@ -150,15 +145,9 @@
    "floor_care": null,
    "kw_agent": "store",
    "kw_care": null,
-   "hesitations": [
-    [
-     "agent",
-     "medicine_question",
-     "stub-safer-default"
-    ]
-   ],
-   "decider_ms": 2606.4,
-   "total_ms": 2615.7
+   "hesitations": [],
+   "decider_ms": 3011.5,
+   "total_ms": 3019.3
   },
   {
    "id": 10,
@@ -170,8 +159,8 @@
    "kw_agent": "medicine_question",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2245.9,
-   "total_ms": 2254.1
+   "decider_ms": 3009.1,
+   "total_ms": 3016.1
   },
   {
    "id": 11,
@@ -183,8 +172,8 @@
    "kw_agent": "medicine_question",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2375.2,
-   "total_ms": 2382.8
+   "decider_ms": 2937.4,
+   "total_ms": 2946.0
   },
   {
    "id": 12,
@@ -202,8 +191,8 @@
      "stub-safer-default"
     ]
    ],
-   "decider_ms": 4051.2,
-   "total_ms": 4061.3
+   "decider_ms": 4347.8,
+   "total_ms": 4355.4
   },
   {
    "id": 13,
@@ -221,8 +210,8 @@
      "stub-safer-default"
     ]
    ],
-   "decider_ms": 3675.7,
-   "total_ms": 3684.6
+   "decider_ms": 5151.8,
+   "total_ms": 5160.5
   },
   {
    "id": 14,
@@ -234,8 +223,8 @@
    "kw_agent": "medicine_question",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 2055.3,
-   "total_ms": 2063.8
+   "decider_ms": 3952.5,
+   "total_ms": 3961.3
   },
   {
    "id": 15,
@@ -247,8 +236,8 @@
    "kw_agent": "feelings",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2182.8,
-   "total_ms": 2191.0
+   "decider_ms": 3730.1,
+   "total_ms": 3738.8
   },
   {
    "id": 16,
@@ -260,8 +249,8 @@
    "kw_agent": "feelings",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2232.9,
-   "total_ms": 2241.6
+   "decider_ms": 3964.3,
+   "total_ms": 3972.1
   },
   {
    "id": 17,
@@ -273,8 +262,8 @@
    "kw_agent": "feelings",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2083.4,
-   "total_ms": 2091.6
+   "decider_ms": 3161.0,
+   "total_ms": 3168.9
   },
   {
    "id": 18,
@@ -286,8 +275,8 @@
    "kw_agent": "feelings",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2016.2,
-   "total_ms": 2023.8
+   "decider_ms": 2983.2,
+   "total_ms": 2995.6
   },
   {
    "id": 19,
@@ -299,8 +288,8 @@
    "kw_agent": "symptoms",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 3880.9,
-   "total_ms": 3887.9
+   "decider_ms": 4449.1,
+   "total_ms": 4457.9
   },
   {
    "id": 20,
@@ -312,8 +301,8 @@
    "kw_agent": "symptoms",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 4600.7,
-   "total_ms": 4609.6
+   "decider_ms": 4134.2,
+   "total_ms": 4142.5
   },
   {
    "id": 21,
@@ -325,8 +314,8 @@
    "kw_agent": "symptoms",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 4383.3,
-   "total_ms": 4392.5
+   "decider_ms": 4184.4,
+   "total_ms": 4192.8
   },
   {
    "id": 22,
@@ -338,8 +327,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 4692.9,
-   "total_ms": 4703.5
+   "decider_ms": 4477.7,
+   "total_ms": 4486.5
   },
   {
    "id": 23,
@@ -351,8 +340,8 @@
    "kw_agent": "symptoms",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 4201.3,
-   "total_ms": 4209.9
+   "decider_ms": 4436.4,
+   "total_ms": 4443.6
   },
   {
    "id": 24,
@@ -364,8 +353,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 4525.9,
-   "total_ms": 4536.0
+   "decider_ms": 4735.0,
+   "total_ms": 4743.7
   },
   {
    "id": 25,
@@ -377,8 +366,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 4265.9,
-   "total_ms": 4274.6
+   "decider_ms": 4644.3,
+   "total_ms": 4656.9
   },
   {
    "id": 26,
@@ -390,8 +379,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 3834.0,
-   "total_ms": 3845.8
+   "decider_ms": 4421.3,
+   "total_ms": 4429.1
   },
   {
    "id": 27,
@@ -403,8 +392,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 4171.5,
-   "total_ms": 4178.6
+   "decider_ms": 4251.7,
+   "total_ms": 4259.8
   },
   {
    "id": 28,
@@ -416,15 +405,15 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 4201.6,
-   "total_ms": 4210.6
+   "decider_ms": 4101.3,
+   "total_ms": 4109.2
   },
   {
    "id": 29,
    "text": "Can I take this cold medicine? Also I've had blood in my stool this week.",
    "agent": "medicine_question",
    "care": "see_doctor",
-   "floor_agent": "symptoms",
+   "floor_agent": "pharmacist",
    "floor_care": "see_doctor",
    "kw_agent": "medicine_question",
    "kw_care": "see_doctor",
@@ -435,8 +424,8 @@
      "stub-safer-default"
     ]
    ],
-   "decider_ms": 4466.9,
-   "total_ms": 4477.4
+   "decider_ms": 4047.2,
+   "total_ms": 4054.7
   },
   {
    "id": 30,
@@ -448,8 +437,8 @@
    "kw_agent": "medicine_question",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 4154.6,
-   "total_ms": 4165.4
+   "decider_ms": 4172.9,
+   "total_ms": 4180.7
   },
   {
    "id": 31,
@@ -461,8 +450,8 @@
    "kw_agent": "medicine_question",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 4129.4,
-   "total_ms": 4137.6
+   "decider_ms": 4144.1,
+   "total_ms": 4153.3
   },
   {
    "id": 32,
@@ -474,8 +463,8 @@
    "kw_agent": "medicine_question",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 4106.1,
-   "total_ms": 4114.8
+   "decider_ms": 4020.3,
+   "total_ms": 4028.4
   },
   {
    "id": 33,
@@ -487,8 +476,8 @@
    "kw_agent": "feelings",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 3977.0,
-   "total_ms": 3984.6
+   "decider_ms": 4098.9,
+   "total_ms": 4105.8
   },
   {
    "id": 34,
@@ -500,8 +489,8 @@
    "kw_agent": "feelings",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 4002.9,
-   "total_ms": 4010.3
+   "decider_ms": 4433.7,
+   "total_ms": 4440.6
   },
   {
    "id": 35,
@@ -513,8 +502,8 @@
    "kw_agent": "feelings",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 3970.0,
-   "total_ms": 3979.5
+   "decider_ms": 4272.0,
+   "total_ms": 4279.6
   },
   {
    "id": 36,
@@ -526,8 +515,8 @@
    "kw_agent": "emergency",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2612.5,
-   "total_ms": 2612.6
+   "decider_ms": 1991.2,
+   "total_ms": 1991.3
   },
   {
    "id": 37,
@@ -539,8 +528,8 @@
    "kw_agent": "emergency",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 2579.6,
-   "total_ms": 2579.7
+   "decider_ms": 1966.6,
+   "total_ms": 1966.8
   },
   {
    "id": 38,
@@ -554,12 +543,12 @@
    "hesitations": [
     [
      "emergency_now",
-     "yes (safer)",
-     "stub-safer-default"
+     "yes (unsure -> safe side, no LLM)",
+     "python-rule"
     ]
    ],
-   "decider_ms": 2395.4,
-   "total_ms": 2395.5
+   "decider_ms": 1938.9,
+   "total_ms": 1939.0
   },
   {
    "id": 39,

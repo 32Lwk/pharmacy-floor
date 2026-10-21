@@ -34,10 +34,10 @@ def _safer(route: str) -> str:
 
 
 def apply_policy(decider_route, route_confidence, route_probabilities, flags, *,
-                 confidence_threshold: float = DEFAULT_CONFIDENCE_THRESHOLD) -> CareDecision:
+                 confidence_threshold: float = DEFAULT_CONFIDENCE_THRESHOLD, extra_danger: tuple = ()) -> CareDecision:
     d = CareDecision(decider_route, decider_route, route_confidence, route_probabilities, flags)
     yes = {k: v >= FLAG_THRESHOLDS.get(k, DEFAULT_FLAG_THRESHOLD) for k, v in flags.items()}
-    danger = [k for k in DANGER_KEYS if yes.get(k)]
+    danger = [k for k in dict.fromkeys(DANGER_KEYS + tuple(extra_danger)) if yes.get(k)]
     low_conf = route_confidence < confidence_threshold
 
     if d.route == "emergency":

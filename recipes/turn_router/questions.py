@@ -4,7 +4,22 @@ All questions are asked about the same state in ONE Decider call per turn.
 """
 from __future__ import annotations
 
+import json
+import os
+from pathlib import Path
+
 from strands_decider.schema import ChoiceQuestion, NoulQuestion
+
+# "Add one question, fix it forever": extra yes/no questions live in a small data file (see rules/README.md).
+ADDED_FILE = Path(os.environ.get("FLOOR_ADDED_QUESTIONS", Path(__file__).resolve().parents[2] / "rules" / "added_questions.json"))
+
+
+def load_added(step: str = "safety", path: Path = ADDED_FILE) -> dict:
+    """key -> spec dict (step, question, true, false, yes_at, on_yes, label) for one step ("safety" = turn router,
+    "symptom" = Care Router). Empty if the file is missing or FLOOR_ADDED_QUESTIONS=off."""
+    if os.environ.get("FLOOR_ADDED_QUESTIONS") == "off" or not Path(path).exists():
+        return {}
+    return {q["key"]: q for q in json.loads(Path(path).read_text()) if q.get("step", "safety") == step}
 
 AGENTS = {
     "symptoms": "the user describes a body symptom (their own or a family member's) or wants something for it",
@@ -46,7 +61,7 @@ SAFETY_ALL = {
 TRIMMED_SAFETY = ("emergency_now", "self_harm", "special_population", "manipulation", "mentions_symptom")
 
 
-def build_questions(full: bool = False) -> dict:
+def build_questions(full: bool = False, added: dict | None = None) -> dict:
     """full=True: 2 choice + 11 yes/no (13 + mentions_symptom). Default: 1 choice + 5 yes/no (6)."""
     q = {"agent": ChoiceQuestion(instructions="Which pharmacy staff member should answer this message?", criteria=AGENTS)}
     if full:
@@ -56,4 +71,6 @@ def build_questions(full: bool = False) -> dict:
     for k in (SAFETY_ALL if full else TRIMMED_SAFETY):
         ins, t, f = SAFETY_ALL[k]
         q[k] = NoulQuestion(instructions=ins, criteria={"true": t, "false": f})
+    for k, a in (load_added() if added is None else added).items():
+        q[k] = NoulQuestion(instructions=a["question"], criteria={"true": a["true"], "false": a["false"]})
     return q
