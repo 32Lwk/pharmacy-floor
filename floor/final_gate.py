@@ -21,3 +21,21 @@ def final_gate(reply: str, *, care_route: str | None, symptom_turn: bool) -> tup
     if symptom_turn and "not a diagnosis" not in reply.lower():
         return reply.rstrip() + " " + DISCLAIMER, "appended disclaimer"
     return reply, "pass"
+
+
+DOSE = re.compile(r"\b\d+(\.\d+)?\s*(-|to|–)?\s*\d*\s*(mg|milligram|ml|g|hours?|hrs?|times|tablets?|pills?|capsules?|doses?)\b|every \d|\b(once|twice|three times) (a|per) day", re.I)
+NO_DOSE = ("For how much and how often to take it, please follow the package label and ask our pharmacist, "
+           "who can check it against your situation. This is general information only.")
+NUM = re.compile(r"\d+(?::\d+)?")
+
+
+def specialist_gate(reply: str, *, agent: str, store_facts: str | None) -> tuple[str, str]:
+    """Agent-specific grounding checks, run before final_gate."""
+    if agent == "medicine_question" and DOSE.search(reply):
+        return NO_DOSE, "replaced: dose/interval numbers are not allowed"
+    if agent == "store":
+        facts = store_facts or ""
+        stray = [n for n in NUM.findall(reply) if n not in facts]
+        if stray:
+            return ("Here is what I know about our Demo Store (a fictional demo shop): " + facts), f"replaced: numbers not in store data {stray}"
+    return reply, "pass"

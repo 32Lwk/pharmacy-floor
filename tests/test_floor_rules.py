@@ -21,3 +21,27 @@ def test_disclaimer_added_on_symptom_turn():
 def test_crisis_words():
     assert CRISIS_WORDS.search("I want to take the whole box so I don't wake up")
     assert not CRISIS_WORDS.search("Can I take two sleeping pills tonight?")
+
+
+from floor.final_gate import specialist_gate
+from floor.store_data import lookup
+
+
+def test_medicine_question_dose_numbers_removed():
+    for r in ["Ibuprofen can be taken every 4-6 hours.", "Take 200 mg up to 3 times a day.", "Take it twice a day."]:
+        out, v = specialist_gate(r, agent="medicine_question", store_facts=None)
+        assert "package label" in out and not any(ch.isdigit() for ch in out), r
+
+
+def test_medicine_question_without_numbers_passes():
+    r = "It may cause drowsiness. Please follow the package label and ask our pharmacist."
+    assert specialist_gate(r, agent="medicine_question", store_facts=None)[0] == r
+
+
+def test_store_reply_grounded_in_demo_data():
+    facts = lookup("What time do you close tonight?")
+    assert "Demo Store" in facts and "21:00" in facts
+    ok = "Our Demo Store closes at 21:00."
+    assert specialist_gate(ok, agent="store", store_facts=facts)[0] == ok
+    bad, v = specialist_gate("We close at 22:00 and open at 8:00.", agent="store", store_facts=facts)
+    assert v.startswith("replaced") and "22:00" not in bad

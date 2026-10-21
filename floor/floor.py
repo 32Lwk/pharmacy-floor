@@ -13,7 +13,7 @@ from recipes.care_router.handler import ROUTE_INSTRUCTIONS
 from recipes.turn_router import AGENTS, SAFETY_ALL, TurnRouter, TurnRouterIntervention
 
 from .decision_log import TurnLog
-from .final_gate import FIXED, final_gate
+from .final_gate import FIXED, final_gate, specialist_gate
 from .llm import make_model, mode, model_label
 from .specialists import Specialists
 
@@ -148,6 +148,9 @@ class PharmacyFloor:
                 (time.perf_counter() - t0) * 1000)
         # The user sees the specialist's own words; the reception LLM's wrap-up text is not used.
         reply = self.specialists.last_output or re.sub(r"<thinking>.*?</thinking>", "", reception_text, flags=re.S).strip()
+        reply, sv = specialist_gate(reply, agent=agent, store_facts=self.specialists.store_facts)
+        log.add("final_gate", "grounding check", sv, None, "python-rule")
+        self.specialists.store_facts = None
         reply, verdict = final_gate(reply, care_route=care.route if care else None, symptom_turn=symptom_turn)
         log.add("final_gate", "reply check", verdict, None, "python-rule")
         return self._finish(log, agent, reply, t_start)
