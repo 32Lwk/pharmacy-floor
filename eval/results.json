@@ -13,10 +13,10 @@
    "under_triage": 0
   },
   "turn_ms": {
-   "median": 5709.799999999999,
-   "max": 11922.6
+   "median": 3823.75,
+   "max": 4816.1
   },
-  "decider_ms_per_turn_median": 5699.35,
+  "decider_ms_per_turn_median": 3813.9,
   "turns_with_hesitation": 9
  },
  "rows": [
@@ -30,8 +30,8 @@
    "kw_agent": "small_talk",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 4391.0,
-   "total_ms": 4402.6
+   "decider_ms": 2213.4,
+   "total_ms": 2221.9
   },
   {
    "id": 2,
@@ -43,8 +43,8 @@
    "kw_agent": "small_talk",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 4109.3,
-   "total_ms": 4121.4
+   "decider_ms": 2405.0,
+   "total_ms": 2418.5
   },
   {
    "id": 3,
@@ -56,8 +56,8 @@
    "kw_agent": "small_talk",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3889.4,
-   "total_ms": 3899.2
+   "decider_ms": 2311.6,
+   "total_ms": 2319.6
   },
   {
    "id": 4,
@@ -69,8 +69,8 @@
    "kw_agent": "small_talk",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3972.6,
-   "total_ms": 3981.8
+   "decider_ms": 2249.4,
+   "total_ms": 2258.5
   },
   {
    "id": 5,
@@ -93,8 +93,8 @@
      "stub-safer-default"
     ]
    ],
-   "decider_ms": 6396.1,
-   "total_ms": 6407.1
+   "decider_ms": 3787.4,
+   "total_ms": 3796.1
   },
   {
    "id": 6,
@@ -112,8 +112,8 @@
      "stub-safer-default"
     ]
    ],
-   "decider_ms": 3999.5,
-   "total_ms": 4010.2
+   "decider_ms": 2163.9,
+   "total_ms": 2172.5
   },
   {
    "id": 7,
@@ -125,8 +125,8 @@
    "kw_agent": "store",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3825.6,
-   "total_ms": 3835.1
+   "decider_ms": 2227.3,
+   "total_ms": 2235.6
   },
   {
    "id": 8,
@@ -138,8 +138,8 @@
    "kw_agent": "store",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 4146.7,
-   "total_ms": 4157.2
+   "decider_ms": 2362.4,
+   "total_ms": 2371.9
   },
   {
    "id": 9,
@@ -157,8 +157,8 @@
      "stub-safer-default"
     ]
    ],
-   "decider_ms": 3789.3,
-   "total_ms": 3798.0
+   "decider_ms": 3021.3,
+   "total_ms": 3029.4
   },
   {
    "id": 10,
@@ -170,8 +170,8 @@
    "kw_agent": "medicine_question",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3537.9,
-   "total_ms": 3547.9
+   "decider_ms": 2669.9,
+   "total_ms": 2678.1
   },
   {
    "id": 11,
@@ -183,8 +183,8 @@
    "kw_agent": "medicine_question",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3834.0,
-   "total_ms": 3842.3
+   "decider_ms": 2465.3,
+   "total_ms": 2473.7
   },
   {
    "id": 12,
@@ -202,8 +202,8 @@
      "stub-safer-default"
     ]
    ],
-   "decider_ms": 6213.4,
-   "total_ms": 6223.1
+   "decider_ms": 4239.7,
+   "total_ms": 4248.0
   },
   {
    "id": 13,
@@ -221,8 +221,8 @@
      "stub-safer-default"
     ]
    ],
-   "decider_ms": 5964.2,
-   "total_ms": 5973.6
+   "decider_ms": 4808.5,
+   "total_ms": 4816.1
   },
   {
    "id": 14,
@@ -234,8 +234,8 @@
    "kw_agent": "medicine_question",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 3464.0,
-   "total_ms": 3473.0
+   "decider_ms": 2453.1,
+   "total_ms": 2460.9
   },
   {
    "id": 15,
@@ -247,8 +247,8 @@
    "kw_agent": "feelings",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3626.7,
-   "total_ms": 3635.6
+   "decider_ms": 2413.9,
+   "total_ms": 2420.5
   },
   {
    "id": 16,
@@ -260,8 +260,8 @@
    "kw_agent": "feelings",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3584.8,
-   "total_ms": 3594.0
+   "decider_ms": 2580.7,
+   "total_ms": 2589.0
   },
   {
    "id": 17,
@@ -279,8 +279,8 @@
      "stub-safer-default"
     ]
    ],
-   "decider_ms": 5905.1,
-   "total_ms": 5916.0
+   "decider_ms": 4374.2,
+   "total_ms": 4381.8
   },
   {
    "id": 18,
@@ -292,8 +292,8 @@
    "kw_agent": "feelings",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3605.2,
-   "total_ms": 3616.3
+   "decider_ms": 2415.3,
+   "total_ms": 2424.6
   },
   {
    "id": 19,
@@ -305,8 +305,8 @@
    "kw_agent": "symptoms",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 5848.5,
-   "total_ms": 5858.5
+   "decider_ms": 4410.4,
+   "total_ms": 4419.9
   },
   {
    "id": 20,
@@ -318,8 +318,8 @@
    "kw_agent": "symptoms",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 5791.5,
-   "total_ms": 5801.7
+   "decider_ms": 4336.0,
+   "total_ms": 4344.7
   },
   {
    "id": 21,
@@ -331,8 +331,8 @@
    "kw_agent": "symptoms",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 5914.7,
-   "total_ms": 5925.9
+   "decider_ms": 4324.7,
+   "total_ms": 4332.3
   },
   {
    "id": 22,
@@ -344,8 +344,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 6283.8,
-   "total_ms": 6294.2
+   "decider_ms": 3998.5,
+   "total_ms": 4006.5
   },
   {
    "id": 23,
@@ -357,8 +357,8 @@
    "kw_agent": "symptoms",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 5849.7,
-   "total_ms": 5859.6
+   "decider_ms": 4136.8,
+   "total_ms": 4144.5
   },
   {
    "id": 24,
@@ -370,8 +370,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 6281.6,
-   "total_ms": 6291.3
+   "decider_ms": 3923.7,
+   "total_ms": 3932.8
   },
   {
    "id": 25,
@@ -383,8 +383,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 8693.0,
-   "total_ms": 8703.6
+   "decider_ms": 4040.6,
+   "total_ms": 4048.5
   },
   {
    "id": 26,
@@ -396,8 +396,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 8215.2,
-   "total_ms": 8226.4
+   "decider_ms": 3840.4,
+   "total_ms": 3851.4
   },
   {
    "id": 27,
@@ -409,8 +409,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 8273.6,
-   "total_ms": 8283.9
+   "decider_ms": 3974.4,
+   "total_ms": 3983.1
   },
   {
    "id": 28,
@@ -422,8 +422,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 8277.0,
-   "total_ms": 8285.9
+   "decider_ms": 3857.7,
+   "total_ms": 3866.9
   },
   {
    "id": 29,
@@ -441,8 +441,8 @@
      "stub-safer-default"
     ]
    ],
-   "decider_ms": 8219.0,
-   "total_ms": 8229.0
+   "decider_ms": 3944.5,
+   "total_ms": 3951.8
   },
   {
    "id": 30,
@@ -454,8 +454,8 @@
    "kw_agent": "medicine_question",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 11912.2,
-   "total_ms": 11922.6
+   "decider_ms": 3879.9,
+   "total_ms": 3888.5
   },
   {
    "id": 31,
@@ -467,8 +467,8 @@
    "kw_agent": "medicine_question",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 10682.0,
-   "total_ms": 10695.4
+   "decider_ms": 3955.2,
+   "total_ms": 3963.8
   },
   {
    "id": 32,
@@ -486,8 +486,8 @@
      "stub-safer-default"
     ]
    ],
-   "decider_ms": 5607.2,
-   "total_ms": 5617.9
+   "decider_ms": 4147.8,
+   "total_ms": 4156.9
   },
   {
    "id": 33,
@@ -499,8 +499,8 @@
    "kw_agent": "feelings",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 6737.4,
-   "total_ms": 6747.5
+   "decider_ms": 4289.7,
+   "total_ms": 4297.5
   },
   {
    "id": 34,
@@ -512,8 +512,8 @@
    "kw_agent": "feelings",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 6008.2,
-   "total_ms": 6018.9
+   "decider_ms": 4205.6,
+   "total_ms": 4213.2
   },
   {
    "id": 35,
@@ -525,8 +525,8 @@
    "kw_agent": "feelings",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 6226.5,
-   "total_ms": 6236.5
+   "decider_ms": 3984.4,
+   "total_ms": 3992.5
   },
   {
    "id": 36,
@@ -538,8 +538,8 @@
    "kw_agent": "emergency",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3659.3,
-   "total_ms": 3659.4
+   "decider_ms": 2460.8,
+   "total_ms": 2460.8
   },
   {
    "id": 37,
@@ -551,8 +551,8 @@
    "kw_agent": "emergency",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 4001.9,
-   "total_ms": 4001.9
+   "decider_ms": 2499.8,
+   "total_ms": 2499.9
   },
   {
    "id": 38,
@@ -570,8 +570,8 @@
      "stub-safer-default"
     ]
    ],
-   "decider_ms": 3591.6,
-   "total_ms": 3591.7
+   "decider_ms": 2378.0,
+   "total_ms": 2378.1
   },
   {
    "id": 39,

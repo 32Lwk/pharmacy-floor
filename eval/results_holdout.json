@@ -13,10 +13,10 @@
    "under_triage": 5
   },
   "turn_ms": {
-   "median": 4706.549999999999,
-   "max": 6459.5
+   "median": 2972.45,
+   "max": 4183.5
   },
-  "decider_ms_per_turn_median": 4702.0,
+  "decider_ms_per_turn_median": 2964.2,
   "turns_with_hesitation": 4
  },
  "rows": [
@@ -30,8 +30,8 @@
    "kw_agent": "small_talk",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3499.0,
-   "total_ms": 3507.7
+   "decider_ms": 2433.6,
+   "total_ms": 2442.1
   },
   {
    "id": 102,
@@ -43,8 +43,8 @@
    "kw_agent": "store",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3275.6,
-   "total_ms": 3286.9
+   "decider_ms": 2304.7,
+   "total_ms": 2314.9
   },
   {
    "id": 103,
@@ -62,8 +62,8 @@
      "stub-safer-default"
     ]
    ],
-   "decider_ms": 3432.4,
-   "total_ms": 3442.6
+   "decider_ms": 2350.0,
+   "total_ms": 2357.8
   },
   {
    "id": 104,
@@ -75,8 +75,8 @@
    "kw_agent": "medicine_question",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 3612.9,
-   "total_ms": 3622.7
+   "decider_ms": 2344.7,
+   "total_ms": 2352.6
   },
   {
    "id": 105,
@@ -88,8 +88,8 @@
    "kw_agent": "medicine_question",
    "kw_care": "otc_ok",
    "hesitations": [],
-   "decider_ms": 5988.1,
-   "total_ms": 5998.3
+   "decider_ms": 4029.5,
+   "total_ms": 4038.5
   },
   {
    "id": 106,
@@ -101,8 +101,8 @@
    "kw_agent": "small_talk",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 5481.8,
-   "total_ms": 5481.9
+   "decider_ms": 4183.4,
+   "total_ms": 4183.5
   },
   {
    "id": 107,
@@ -114,8 +114,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 6448.3,
-   "total_ms": 6459.5
+   "decider_ms": 3888.7,
+   "total_ms": 3899.7
   },
   {
    "id": 108,
@@ -127,8 +127,8 @@
    "kw_agent": "small_talk",
    "kw_care": null,
    "hesitations": [],
-   "decider_ms": 5750.3,
-   "total_ms": 5760.0
+   "decider_ms": 3573.3,
+   "total_ms": 3581.9
   },
   {
    "id": 109,
@@ -140,8 +140,8 @@
    "kw_agent": "symptoms",
    "kw_care": "see_doctor",
    "hesitations": [],
-   "decider_ms": 5670.3,
-   "total_ms": 5678.9
+   "decider_ms": 3542.9,
+   "total_ms": 3553.1
   },
   {
    "id": 110,
@@ -159,8 +159,8 @@
      "stub-safer-default"
     ]
    ],
-   "decider_ms": 5832.5,
-   "total_ms": 5841.8
+   "decider_ms": 3494.8,
+   "total_ms": 3502.8
   },
   {
    "id": 111,
@@ -178,8 +178,8 @@
      "stub-safer-default"
     ]
    ],
-   "decider_ms": 3566.3,
-   "total_ms": 3566.4
+   "decider_ms": 2175.3,
+   "total_ms": 2175.3
   },
   {
    "id": 112,
@@ -197,8 +197,8 @@
      "stub-safer-default"
     ]
    ],
-   "decider_ms": 3922.2,
-   "total_ms": 3931.2
+   "decider_ms": 2073.7,
+   "total_ms": 2082.0
   }
  ]
 }

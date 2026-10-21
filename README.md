@@ -100,6 +100,15 @@ Now: 1 Nova Lite call per turn (the specialist), max 220 output tokens. Text ste
 Whole turns were 3.5-10.3 s, almost all of it Decider on CPU (3.5-8.8 s; the 8.8 s turn also ran
 Care Router and the hesitation band). On a GPU the Decider part should drop sharply (not measured).
 
+## Memory (CPU)
+
+strands-decider 0.2.0 upcasts the torso to fp32 on CPU, which put the demo server at ~9 GB RSS and got it
+OOM-killed on a 15 GB box. Pharmacy Floor keeps the torso in bf16 (`DECIDER_DTYPE=bf16`, default), loads one
+engine per process, uses `DECIDER_THREADS` (default 6) and runs `gc.collect()` after each request.
+Measured: peak RSS **4.1 GB** over 8 back-to-back consultations (was ~9 GB). On the 40 + 12 eval cases the
+bf16 routing and care outcomes were identical to fp32, and the median stub turn dropped from 5.7 s to 3.8 s
+on this box.
+
 ## Bedrock budget guard
 
 `floor/budget.py` wraps `BedrockModel`: before every call it checks the running total in

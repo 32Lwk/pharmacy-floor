@@ -35,9 +35,22 @@ class _Cached:
         return self.decision
 
 
+_ENGINE = None
+
+
 def load_engine():
-    from strands_decider.infer import load_engine as _le
-    return _le(os.environ.get("DECIDER_CHECKPOINT", DEFAULT_CHECKPOINT), device=os.environ.get("DECIDER_DEVICE", "cpu"))
+    """One Decider engine per process. bf16 on CPU by default (~3.7 GB peak instead of ~9 GB in fp32)."""
+    global _ENGINE
+    if _ENGINE is not None:
+        return _ENGINE
+    import torch
+    from strands_decider import infer
+    torch.set_num_threads(int(os.environ.get("DECIDER_THREADS", min(6, os.cpu_count() or 1))))
+    if os.environ.get("DECIDER_DTYPE", "bf16") == "bf16":
+        # strands-decider 0.2.0 upcasts the torso to fp32 on CPU for speed; skip that to halve memory.
+        infer.SystemOneEngine._upcast_torso_for_cpu = lambda self: None
+    _ENGINE = infer.load_engine(os.environ.get("DECIDER_CHECKPOINT", DEFAULT_CHECKPOINT), device=os.environ.get("DECIDER_DEVICE", "cpu"))
+    return _ENGINE
 
 
 class PharmacyFloor:

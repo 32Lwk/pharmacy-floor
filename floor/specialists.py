@@ -10,7 +10,8 @@ from recipes.care_router import CareRouterIntervention
 from .llm import make_model
 from .store_data import lookup
 
-BASE = ("You work on a drugstore floor in Japan. Reply in 2-4 short sentences in English. Never diagnose. "
+BASE = ("You work on a drugstore floor in Japan. Reply in 2-4 short sentences in English. Never diagnose: never name a likely condition or cause "
+        "(no 'you might have ...', 'it sounds like ...', 'this could be ...'); describe care options and signs to see a doctor instead. "
         "Never name prescription-only drugs. If a [CARE ROUTE] note is present, follow it exactly.")
 
 PROMPTS = {

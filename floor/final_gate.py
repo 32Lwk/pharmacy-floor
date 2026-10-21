@@ -29,8 +29,25 @@ NO_DOSE = ("For how much and how often to take it, please follow the package lab
 NUM = re.compile(r"\d+(?::\d+)?")
 
 
+GUESS = re.compile(r"\b(you|it|this|that)\s+(might|may|could|probably|likely)\s+(have|be|indicate|suggest)\b|"
+                   r"sounds like|looks like you|a (mild |possible )?case of|(likely|probably|possibly) (a|an|due to|caused)|"
+                   r"(is|are) (likely|probably) (caused|due)|signs? of (a|an) \w+ (infection|condition|disease)", re.I)
+NO_GUESS = "I can't tell what is causing this. "
+
+
+def strip_guesses(reply: str) -> tuple[str, bool]:
+    parts = re.split(r"(?<=[.!?])\s+", reply.strip())
+    kept = [p for p in parts if not GUESS.search(p)]
+    return (" ".join(kept), len(kept) != len(parts))
+
+
 def specialist_gate(reply: str, *, agent: str, store_facts: str | None) -> tuple[str, str]:
     """Agent-specific grounding checks, run before final_gate."""
+    reply, removed = strip_guesses(reply)
+    if removed:
+        reply = NO_GUESS + reply if reply else NO_GUESS + "Our pharmacist can help, or please see a doctor if it gets worse."
+        out, v = specialist_gate(reply, agent=agent, store_facts=store_facts)
+        return out, "removed a guessed diagnosis" + ("" if v == "pass" else "; " + v)
     if agent == "medicine_question" and DOSE.search(reply):
         return NO_DOSE, "replaced: dose/interval numbers are not allowed"
     if agent == "store":
