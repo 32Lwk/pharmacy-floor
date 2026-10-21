@@ -64,10 +64,10 @@ fetch('/api/info').then(r=>r.json()).then(j=>$('#llm').textContent='text model: 
 $('#tg').onclick=()=>{showAll=!showAll;$('#tg').textContent=showAll?'hide low-probability flags':'show low-probability flags';if(last)render(last)};
 const STEP={pre_gate:'Pre-gate (crisis words)',turn_router:'Turn Router — one Decider call',hesitation:'Hesitation band',care_router:'Care Router — safety layer',policy:'Hard rules',final_gate:'Final gate'};
 function render(r){
- const dms=r.entries.filter(e=>e.decided_by==='decider-2b'&&e.ms).reduce((a,e)=>a+e.ms,0);
+ const dl=r.entries.filter(e=>e.decided_by==='decider-2b'&&e.ms!=null);const dms=dl.reduce((a,e)=>a+e.ms,0);
  const fg=(r.entries.find(e=>e.step==='final_gate')||{}).answer||'—';
  const cards=el('div','cards');
- for(const [k,v] of [['specialist',r.final_agent],['Decider time',Math.round(dms)+' ms'],['turn total',Math.round(r.total_ms)+' ms'],['final gate',fg]]){const c=el('div','card');c.append(el('div','k',k),el('div','v',v));cards.append(c)}
+ for(const [k,v] of [['specialist',r.final_agent],['Decider time',dl.length?Math.round(dms)+' ms':'—'],['turn total',Math.round(r.total_ms)+' ms'],['final gate',fg]]){const c=el('div','card');c.append(el('div','k',k),el('div','v',v));cards.append(c)}
  const t=el('table');const h=el('tr');for(const x of ['question','answer','confidence','decided by','ms'])h.append(el('th',null,x));t.append(h);
  let cur=null;
  for(const e of r.entries){
@@ -77,10 +77,10 @@ function render(r){
   const tr=el('tr',low?'dim':null);tr.append(el('td',null,e.question),el('td',null,e.answer));
   const c=el('td');if(e.confidence!=null){const b=el('span','bar');b.style.width=Math.round(e.confidence*40)+'px';c.append(b,document.createTextNode(e.confidence.toFixed(2)))}tr.append(c);
   const by=el('td');by.append(el('span','by '+e.decided_by,e.decided_by==='stub-safer-default'?'safer default':e.decided_by));tr.append(by);
-  tr.append(el('td',null,e.ms?Math.round(e.ms):''));t.append(tr)}
+  tr.append(el('td',null,e.ms!=null?Math.round(e.ms):''));t.append(tr)}
  $('#dec').replaceChildren(cards,t)}
 $('#f').onsubmit=async ev=>{ev.preventDefault();const m=$('#m').value.trim();if(!m)return;$('#m').value='';$('#send').disabled=true;
- $('#msgs').append(el('div','msg u',m));$('#dec').replaceChildren(el('div','empty','Decider 2B is deciding…'));$('#msgs').scrollTop=1e9;
+ $('#chips').style.display='none';$('#msgs').append(el('div','msg u',m));$('#dec').replaceChildren(el('div','empty','Decider 2B is deciding…'));$('#msgs').scrollTop=1e9;
  try{const r=await (await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:m})})).json();
   last=r;const b=el('div','msg b');b.append(el('div','who'+(r.final_agent==='emergency'?' em':''),r.final_agent.replace('_',' ')),document.createTextNode(r.reply));$('#msgs').append(b);render(r)}
  catch(e){$('#dec').replaceChildren(el('div','empty','Error: '+e))}
