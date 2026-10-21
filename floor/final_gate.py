@@ -43,7 +43,8 @@ def strip_guesses(reply: str) -> tuple[str, bool]:
 
 def specialist_gate(reply: str, *, agent: str, store_facts: str | None) -> tuple[str, str]:
     """Agent-specific grounding checks, run before final_gate."""
-    reply, removed = strip_guesses(reply)
+    # Diagnosis guesses matter on health answers; "it sounds like you're going through a lot" is fine for feelings.
+    reply, removed = strip_guesses(reply) if agent in ("symptoms", "medicine_question") else (reply, False)
     if removed:
         reply = NO_GUESS + reply if reply else NO_GUESS + "Our pharmacist can help, or please see a doctor if it gets worse."
         out, v = specialist_gate(reply, agent=agent, store_facts=store_facts)

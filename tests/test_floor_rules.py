@@ -59,3 +59,8 @@ def test_guessed_diagnosis_is_removed():
 def test_care_advice_without_guess_passes():
     r = "Gentle cleaning and an over-the-counter cream may help. See a doctor if it bleeds."
     assert specialist_gate(r, agent="symptoms", store_facts=None) == (r, "pass")
+
+
+def test_feelings_empathy_not_treated_as_diagnosis():
+    r = "It sounds like you're going through a lot. Would you like to tell me more?"
+    assert specialist_gate(r, agent="feelings", store_facts=None) == (r, "pass")
