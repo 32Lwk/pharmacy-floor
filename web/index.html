@@ -96,7 +96,7 @@ function render(r){
  const ho=r.final_agent==='pharmacist',em=r.final_agent==='emergency';
  const sum=el('div','sum');const big=el('div','card big');big.style.borderColor=ho?'#fb923c':em?'#ef4444':'#22c55e';
  big.append(el('div','k','result'),el('div','v',HELPER[r.final_agent]||r.final_agent));sum.append(big);
- for(const [k,v] of [['typed questions',dec.length+' answered'],['decision time',dec.length?Math.round(dms)+' ms':'—'],['text-model calls',String(llm)],['whole turn',Math.round(r.total_ms)+' ms']]){const c=el('div','card');c.append(el('div','k',k),el('div','v',v));sum.append(c)}
+ for(const [k,v] of [['typed questions',(r.decider_questions??dec.length)+' answered'],['decision time',dec.length?Math.round(dms)+' ms':'—'],['text-model calls',String(llm)],['whole turn',Math.round(r.total_ms)+' ms']]){const c=el('div','card');c.append(el('div','k',k),el('div','v',v));sum.append(c)}
  const out=el('div',showAll?'tech':'');out.append(sum);
  for(const [step,num,title,hint] of STEPS){const es=r.entries.filter(e=>e.step===step);if(!es.length)continue;
   const box=el('div','step');const h=el('h3');h.append(el('span','n',num),document.createTextNode(title),el('span','hint','· '+hint));box.append(h);

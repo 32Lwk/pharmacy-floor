@@ -142,6 +142,7 @@ class PharmacyFloor:
 
         # Step 1 - who should answer? (one Decider call also carries every safety question)
         td = self.turn_router.decide(text)
+        log.decider_questions += len(self.turn_router.questions)
         ab = C.band(td.agent_confidence, C.AGENT_PROCEED, C.AGENT_HANDOFF)
         log.add("who", "agent", td.agent, td.agent_confidence, "decider-2b", td.ms, label=L("agent"),
                 outcome={"proceed": C.PROCEED, "middle": C.SECOND_LOOK, "handoff": C.HANDOFF}[ab])
@@ -187,6 +188,7 @@ class PharmacyFloor:
         agree = True
         if ab != "proceed":
             ans, ms = ask(self.engine, text, TOOL_CHECK)
+            log.decider_questions += len(TOOL_CHECK)
             chk = ans["topic_check"]
             agree = chk.choice == agent
             log.add("before_tool", "topic_check", chk.choice + (" (agrees)" if agree else f" (differs from {agent})"),
@@ -204,6 +206,7 @@ class PharmacyFloor:
         self.specialists.care_note = None
         if symptom_turn:
             care = self.care_router.decide(text)
+            log.decider_questions += len(self.care_router.questions)
             rule_decided = any(not r.startswith(("low confidence", "Decider:")) for r in care.reasons)
             rb = C.band(care.route_confidence, C.ROUTE_PROCEED, C.ROUTE_HANDOFF)
             log.add("symptom", "route", care.route + ("" if care.route == care.decider_route else f" (Decider said {care.decider_route})"),
@@ -256,6 +259,7 @@ class PharmacyFloor:
         self.specialists.store_facts = None
         if agent != "small_talk":
             ans, ms = ask(self.engine, f"User message: {text}\nReply: {reply}", REPLY_CHECK)
+            log.decider_questions += len(REPLY_CHECK)
             pt = ans["on_topic"].noul
             ob = C.band(pt, C.REPLY_ON_TOPIC_PROCEED, C.REPLY_ON_TOPIC_HANDOFF)
             log.add("before_reply", "on_topic", f"{C.flag_band(pt, C.REPLY_ON_TOPIC_PROCEED, C.REPLY_ON_TOPIC_HANDOFF)} (P={pt:.2f})", pt, "decider-2b", ms,

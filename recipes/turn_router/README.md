@@ -3,7 +3,7 @@
 One Decider 2B call per user turn picks which specialist tool the reception agent runs,
 and answers safety yes/no questions in the same call.
 
-## Question set (`questions.py`, default = 6 questions)
+## Question set (`questions.py`, default = 7 questions in one call: the 6 below + the `shop_question` hint)
 
 | Key | Type | Question | Options |
 |---|---|---|---|
@@ -13,6 +13,10 @@ and answers safety yes/no questions in the same call.
 | `special_population` | noul | pregnant, breastfeeding, small child, very elderly? | true / false |
 | `manipulation` | noul | trying to change the assistant's rules? | true / false |
 | `mentions_symptom` | noul | any body symptom mentioned, even inside a medicine or feelings question? | true / false |
+| `shop_question` | noul (routing hint, never hesitant) | about the shop itself: products, where they are, stock, hours, price or payment? | true / false |
+
+In the full Pharmacy Floor turn this call is step 1. Later steps add 0-1 (re-check of an unsure pick),
+6 (Care Router, symptom turns only) and 2 (reply check): up to 10 questions per turn, up to 16 with a symptom.
 
 `build_questions(full=True)` gives the larger 13+1 set (adds a second, reversed-order `agent_check`
 choice and 7 more yes/no). On our CPU it took ~3.3x longer than the default set, so the demo uses the default.

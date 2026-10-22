@@ -24,6 +24,7 @@ class TurnLog:
     reply: str = ""
     total_ms: float = 0.0
     handoff: str | None = None   # why the turn was handed to the pharmacist, if it was
+    decider_questions: int = 0   # every typed question sent to Decider this turn (shown in the panel)
 
     def add(self, *a, **k):
         self.entries.append(Entry(*a, **k))

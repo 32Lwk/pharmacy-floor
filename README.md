@@ -104,9 +104,14 @@ Decider latency per call, same CPU (`eval/bench_sets.py`, current code, n=8 each
 | Question set | Median |
 |---|---|
 | full turn set: 14 questions (2 choice + 12 yes/no) | 8883 ms |
-| **demo turn set: 6 questions (1 choice + 5 yes/no)** — used every turn | **2518 ms** |
+| **demo turn set: 6 questions (1 choice + 5 yes/no)** — step 1 now asks these 6 plus the `shop_question` hint (7) in one call | **2518 ms** |
 | agent choice only (1 question) | 544 ms |
 | Care Router: 6 questions (1 choice + 5 yes/no) — only on turns that mention a symptom | 1728 ms |
+
+Questions per turn (current code): step 1 = 7 in one call (agent + 5 safety yes/no + `shop_question`);
+step 3 re-check = 0-1 (only when the step-1 pick is below the proceed threshold); step 4 Care Router = 6
+(route + 4 flags + `bleeding`, only on symptom turns); step 6 reply check = 2 (not on small talk).
+So up to 10 questions on a turn without a symptom and up to 16 with one; the panel shows the exact count.
 
 Whole turn with the stub text model, including the step checks (from `eval/results*.json`): median 4433 ms
 (dev, n=40) / 4030 ms (held-out, n=12).
@@ -132,7 +137,7 @@ Honest notes
   (0.4-0.6) were also adjusted once after the first dev run.
 - Bedrock-only routing (Nova Lite, one JSON classification call per message, no Decider) on the 12 held-out
   cases: agent 10/12, care 5/6, under-triage 2 ("my grandfather suddenly can't move his left arm" sent to
-  symptoms / see_doctor instead of emergency; a syrup question for a 2-year-old marked otc_ok). Decider floor on the same cases: agent 9/12,
+  symptoms / see_doctor instead of emergency; a syrup question for a 2-year-old marked otc_ok). Decider floor on the same cases (`eval/results_holdout.json`): agent 10/12,
   care 4/6, under-triage 0. Bedrock median 478 ms per call over the network.
 
 ## Per-turn timing with Bedrock (direct mode, 9 turns, `eval/bedrock_samples.py`)
